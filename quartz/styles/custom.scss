@@ -1,3 +1,166 @@
 @use "./base.scss";
 
-// put your custom CSS here!
+.twoCol{
+  display:flex;
+  gap:18px;
+  align-items:flex-start;
+  margin: 12px 0 18px;
+}
+.twoCol .col{ min-width:0; }
+
+.twoCol .leftCol{ flex: 6; }
+.twoCol .rightCol{ flex: 4; }
+
+@media (max-width: 640px){
+  .twoCol{ flex-direction:column; }
+  .twoCol .leftCol, .twoCol .rightCol{ flex: 1; }
+}
+/* ===== Work Experience (Notion template 느낌) ===== */
+.resumeSection{
+  display: grid;
+  grid-template-columns: 220px 1fr;  /* 왼쪽 라벨 폭 고정 */
+  column-gap: 44px;
+  align-items: start;
+  margin: 22px 0;
+}
+
+.resumeLabel{
+  color: var(--text-muted);
+}
+
+.resumeEn{
+  font-style: italic;
+  font-size: 18px;
+  font-weight: 600;
+  margin-bottom: 6px;
+}
+
+.resumeKo{
+  font-size: 14px;
+  opacity: .9;
+}
+
+.resumeBody{
+  min-width: 0;
+}
+
+/* 총 경력*/
+.expTotal{
+  display: flex;
+  justify-content: left;
+  font-weight: 700;
+  margin: 2px 0 14px;
+  color: #c44747;
+}
+
+/* 회사 블록 */
+.expHeader{
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+
+.expCompany{ font-weight: 800; }
+.expSep{ margin: 0 10px; opacity: .6; }
+.expRole{ font-weight: 700; }
+
+/* 리스트 간격/들여쓰기*/
+.expList{
+  margin: 0;
+  padding-left: 18px;
+}
+.expList li{
+  margin: 6px 0;
+}
+
+/* 회사 사이 가로 줄 */
+.expLine{
+  height: 1px;
+  background: var(--background-modifier-border);
+  margin: 14px 0;
+}
+
+
+.projStack{
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.projCard{
+  border-radius: 14px;
+  padding: 16px 18px;
+  background: var(--background-secondary);
+  background: #f1f0ee;
+  border: 1px solid var(--background-modifier-border);
+}
+
+.projHead{
+  display: flex;
+  gap: 10px;
+  align-items: baseline;
+  flex-wrap: wrap;
+  margin-bottom: 10px;
+}
+
+.projTitle{
+  font-weight: 800;
+}
+
+.projPeriod{
+  font-size: 12px;
+  color: var(--text-muted);
+}
+
+.projList{
+  margin: 0;
+  padding-left: 18px;
+}
+
+.projList li{
+  margin: 6px 0;
+}
+/* ===== Skill chips (Notion 느낌) ===== */
+.skillChips{
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.chip{
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  border-radius: 999px;
+  background: var(--background-primary);
+  border: 1px solid var(--background-modifier-border);
+  font-weight: 700;
+  font-size: 14px;
+  line-height: 1;
+}
+
+.chipIcon{
+  width: 16px;
+  height: 16px;
+  border-radius: 4px;
+  display: inline-block;
+}
+
+.chipEmoji{
+  width: 16px;
+  height: 16px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* 모바일 */
+@media (max-width: 720px){
+  .resumeSection{
+    grid-template-columns: 1fr;
+    row-gap: 10px;
+  }
+  .expTotal{
+    justify-content: flex-start;
+  }
+}
