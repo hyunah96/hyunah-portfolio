@@ -15,7 +15,7 @@
   .twoCol{ flex-direction:column; }
   .twoCol .leftCol, .twoCol .rightCol{ flex: 1; }
 }
-/* ===== Work Experience (Notion template 느낌) ===== */
+/* ===== Work Experience ===== */
 .resumeSection{
   display: grid;
   grid-template-columns: 220px 1fr;  /* 왼쪽 라벨 폭 고정 */
@@ -119,7 +119,6 @@
 .projList li{
   margin: 6px 0;
 }
-/* ===== Skill chips (Notion 느낌) ===== */
 .skillChips{
   display: flex;
   flex-wrap: wrap;
