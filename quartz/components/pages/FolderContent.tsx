@@ -19,10 +19,19 @@ interface FolderContentOptions {
   sort?: SortFn
 }
 
+// const defaultOptions: FolderContentOptions = {
+//   showFolderCount: true,
+//   showSubfolders: true,
+// }
 const defaultOptions: FolderContentOptions = {
   showFolderCount: true,
   showSubfolders: true,
+  // 오래된 글 → 최신 글(최신이 아래)
+  sort: (a, b) =>
+    new Date(a.dates?.published ?? a.dates?.modified ?? a.dates?.created ?? 0).getTime() -
+    new Date(b.dates?.published ?? b.dates?.modified ?? b.dates?.created ?? 0).getTime(),
 }
+
 
 export default ((opts?: Partial<FolderContentOptions>) => {
   const options: FolderContentOptions = { ...defaultOptions, ...opts }
