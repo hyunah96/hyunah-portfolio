@@ -19,19 +19,11 @@ interface FolderContentOptions {
   sort?: SortFn
 }
 
-// const defaultOptions: FolderContentOptions = {
-//   showFolderCount: true,
-//   showSubfolders: true,
-// }
+// ✅ sort를 여기서 강제로 넘기지 않도록 기본 옵션에서는 제거
 const defaultOptions: FolderContentOptions = {
   showFolderCount: true,
   showSubfolders: true,
-  // 오래된 글 → 최신 글(최신이 아래)
-  sort: (a, b) =>
-    new Date(a.dates?.published ?? a.dates?.modified ?? a.dates?.created ?? 0).getTime() -
-    new Date(b.dates?.published ?? b.dates?.modified ?? b.dates?.created ?? 0).getTime(),
 }
-
 
 export default ((opts?: Partial<FolderContentOptions>) => {
   const options: FolderContentOptions = { ...defaultOptions, ...opts }
@@ -97,18 +89,19 @@ export default ((opts?: Partial<FolderContentOptions>) => {
           }
         })
         .filter((page) => page !== undefined) ?? []
+
     const cssClasses: string[] = fileData.frontmatter?.cssclasses ?? []
     const classes = cssClasses.join(" ")
+
+
     const listProps = {
       ...props,
-      sort: options.sort,
+      ...(options.sort ? { sort: options.sort } : {}),
       allFiles: allPagesInFolder,
     }
 
     const content = (
-      (tree as Root).children.length === 0
-        ? fileData.description
-        : htmlToJsx(fileData.filePath!, tree)
+      (tree as Root).children.length === 0 ? fileData.description : htmlToJsx(fileData.filePath!, tree)
     ) as ComponentChildren
 
     return (

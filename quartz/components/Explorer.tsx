@@ -26,26 +26,43 @@ const defaultOptions: Options = {
   folderDefaultState: "collapsed",
   folderClickBehavior: "link",
   useSavedState: true,
+
   mapFn: (node) => {
     return node
   },
-  sortFn: (a, b) => {
-    // Sort order: folders first, then files. Sort folders and files alphabeticall
-    if ((!a.isFolder && !b.isFolder) || (a.isFolder && b.isFolder)) {
-      // numeric: true: Whether numeric collation should be used, such that "1" < "2" < "10"
-      // sensitivity: "base": Only strings that differ in base letters compare as unequal. Examples: a ≠ b, a = á, a = A
+
+  // ✅ 폴더는 기존처럼 이름순 / 파일은 date(오래된→최신) + 이름으로 안정정렬
+  // ⚠️ Explorer는 sortFn을 문자열로 넘겨 inline script에서 실행하므로
+  //    외부 함수/변수 참조 없이, 이 함수 안에서만 끝나야 안전합니다.
+  sortFn: (a: FileTrieNode, b: FileTrieNode) => {
+    // 1) 폴더 먼저
+    if (a.isFolder && !b.isFolder) return -1
+    if (!a.isFolder && b.isFolder) return 1
+
+    // 2) 폴더끼리는 기존처럼 이름순
+    if (a.isFolder && b.isFolder) {
       return a.displayName.localeCompare(b.displayName, undefined, {
         numeric: true,
         sensitivity: "base",
       })
     }
 
-    if (!a.isFolder && b.isFolder) {
-      return 1
-    } else {
-      return -1
-    }
+    // 3) 파일끼리는 contentIndex의 node.data.date 기준 정렬
+    //    date는 JSON에서 문자열로 들어올 수 있어서 new Date(...)로 파싱
+    const da = (a as any).data?.date
+    const db = (b as any).data?.date
+    const ta = da ? new Date(da).getTime() : 0
+    const tb = db ? new Date(db).getTime() : 0
+
+    if (ta !== tb) return ta - tb // 오래된 → 최신 (최신이 아래)
+
+    // 4) 날짜 같으면 이름으로 안정정렬
+    return a.displayName.localeCompare(b.displayName, undefined, {
+      numeric: true,
+      sensitivity: "base",
+    })
   },
+
   filterFn: (node) => node.slugSegment !== "tags",
   order: ["filter", "map", "sort"],
 }
@@ -97,6 +114,7 @@ export default ((userOpts?: Partial<Options>) => {
             <line x1="4" x2="20" y1="18" y2="18" />
           </svg>
         </button>
+
         <button
           type="button"
           class="title-button explorer-toggle desktop-explorer"
@@ -119,14 +137,17 @@ export default ((userOpts?: Partial<Options>) => {
             <polyline points="6 9 12 15 18 9"></polyline>
           </svg>
         </button>
+
         <div id={id} class="explorer-content" aria-expanded={false} role="group">
           <OverflowList class="explorer-ul" />
         </div>
+
         <template id="template-file">
           <li>
             <a href="#"></a>
           </li>
         </template>
+
         <template id="template-folder">
           <li>
             <div class="folder-container">
