@@ -42,7 +42,7 @@
     </div>
     <ul class="expList">
       <li>LRF 센서 기반 풍력 발전기 자동 촬영 시스템 개발</li>
-      <li>드론 스테이션 관제 시스템 개발 (중국 zhifei 협업 프로젝트)</li>
+      <li>드론 스테이션 관제 시스템 개발</li>
     </ul>
   </div>
 

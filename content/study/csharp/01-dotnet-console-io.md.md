@@ -1,0 +1,291 @@
+### 1. .NET 이란?
+
+.NET은 마이크로소프트가 만든 개발 플랫폼으로 그 위에서 다양한 프로젝트 템플릿으로 (콘솔/WPF/Web API 등) <br>
+애플리케이션을 개발하고 실행할 수 있다.
+![](../../assets/dotnet.png)
+
+### 2. 콘솔(Console) 입출력(Console I/O)
+
+- 콘솔 프로그램은 화면(터미널)에 글자를 출력하고, 사용자가 입력한 값을 받아서 처리한다.
+- 입력: `Console.ReadLine()`
+    - 사용자가 엔터 칠 때까지 입력한 한 줄 **문자열**을 읽어서 반환한다.
+- 출력: `Console.WriteLine()`
+    - 화면에 내용을 출력하고 **줄바꿈**을 해준다.
+
+### 3. 이름, 나이 입력 받아 출력하는 예제
+
+```csharp
+Console.WriteLine("이름을 입력하세요");
+string? inputName = Console.ReadLine();
+
+Console.WriteLine("나이를 입력하세요");
+string? inputAge = Console.ReadLine();
+
+Console.WriteLine("이름은 : " + inputName);
+Console.WriteLine("나이는 : " + inputAge);
+```
+
+### 4. 문자열 연결
+
+콘솔에 출력할 때 문자열과 변수 값을 합치는 방법은 여러 가지가 있다.
+
+- **문자열 연결**
+    
+    `+` 연산자로 문자열을 이어 붙이는 방식
+    
+
+```csharp
+Console.WriteLine("이름은 : " + inputName);
+```
+
+- **문자열 보간** ✅ **가독성이 좋아 가장 많이 사용**
+    
+    문자열 앞에 `$`를 붙이고 `{}` 안에 변수를 넣는 방식
+    
+
+```csharp
+Console.WriteLine($"이름은 : {inputName}");
+```
+
+- **String.Format() 방식**
+    
+    서식 문자열에 `{0}`, `{1}` 같은 자리표시자를 사용해 값을 넣는 방식
+    
+
+```csharp
+Console.WriteLine(string.Format("이름은 : {0}", inputName));
+```
+
+### 5. C# 변수의 종류
+
+### 지역 변수(Local variable)
+
+- **메서드 블록 `{ }` 스코프 안**에서 선언되는 변수
+- 선언된 **블록(스코프)** 안에서만 사용 가능하며 블록을 벗어나면 접근할 수 없다.
+
+**예제 1)**
+
+```csharp
+class Program //클래스
+{
+    public void Hyunah() //메서드
+    {
+        int localA = 10; //지역 변수
+        int i = 3;
+       
+        if (i > 0)
+        { 
+            int localB = 5;
+            Console.WriteLine(localB);
+            localA = 3; 
+        } 
+        Console.WriteLine(localB); // 불가능
+    }
+}
+```
+
+**예제 2)**
+
+```csharp
+class Program //Program 클래스
+{
+    public void Hyunah() //Hyunah 메서드
+    {
+        int localA = 10; //지역 변수
+        int i = 3;
+
+        if (i > 0)
+        {
+            int localB = 5;
+            Console.WriteLine(localB);
+            localA = 3; //가능
+        }
+
+        Console.WriteLine(localB); //불가능
+    }
+			public void Woojae() //Woojae 메서드
+			{
+					Console.WriteLine(localA); //Hyunah 메서드에 선언된 지역 변수이므로 불가능
+			}
+}
+```
+
+### 매개변수(Parameter)와 인자
+
+- 매개변수는 메서드가 **받은 값**
+- 인자는 그 칸에 실제로 넣어 호출하는 **입력 값**
+
+**예제**
+
+```csharp
+class Calculator
+{
+    public int Add(int a, int b)   // (순서 2) a, b = 매개변수(메서드가 받은 값)
+    {
+        return a + b; // (순서 3) 반환 값
+    }
+}
+
+class Program
+{
+    static void Main()
+    {
+        Calculator cal = new Calculator();
+
+        int result = cal.Add(3, 5);   // (순서 1) 3,5 = 인자 (입력 값)
+        Console.WriteLine(result);    // (순서 4) 8 출력
+    }
+}
+```
+
+### 6. 전역처럼 쓰고 싶을 때 가장 많이 쓰는 2가지
+
+### 1) 필드 Field (멤버 변수)
+
+- **실제 값을 저장하는 공간**
+- 필드는 클래스 내부에 선언된 변수로 객체의 상태를 저장하며 보통 `private`로 숨기고 프로퍼티를 통해 안전하게 접근한다.
+- 메서드 안의 지역 변수는 메서드가 끝나면 사라지지만 **필드는 객체가 살아있는 동안 계속 유지**
+- 관례적으로 **언더스코어 + camelCase** 사용
+
+```csharp
+class Person {
+  private string _name; //필드
+	private int _age;     //필드
+}
+```
+
+### 프로퍼티(property)
+
+- `get`, `set`접근자를 사용하여 필드의 값을 설정하거나 가져올 수 있다.
+- 프로퍼티명은 관례적으로 PascalCase(대문자) ****사용
+
+```csharp
+public string Name { get; set; }; public int Age { get; set; }
+```
+
+**기본 형태**
+
+```csharp
+class Person
+{
+    private string _name; //필드
+    private int _age; //필드
+
+    public string Name   //프로퍼티
+    {
+        get { return _name; }
+        set { _name = value; }
+    }
+
+    public int Age       //프로퍼티
+    {
+        get { return _age; }
+        set { _age = value; }
+    }
+}
+```
+
+**람다식 활용 가능**
+
+```csharp
+public string Name
+{
+    get => _name;
+    set => _name = value;
+} 
+```
+
+### 2) static
+
+- `static`은 **클래스 기준으로 1개만 존재**
+- 여러 객체가 만들어져도 같은 값을 공유
+
+```csharp
+class Game
+{
+    public static int Score = 0;
+}
+```
+
+- 어디서든 `Game.Score` 으로 선언하여 접근 가능하다.
+
+### 3) 인스턴스
+
+- **객체를 만든 다음에만** 호출 가능
+- 각 객체가 가진 상태(데이터)를 사용/변경하는 기능 느낌
+
+```csharp
+var c = new Calculator();
+c.Add(1, 2);
+```
+
+### 7. 변수 선언과 사용 규칙 정리
+
+### **1) const(상수)**
+
+- **컴파일 시 값이 고정**
+- 한 번 정하면 절대 변경 불가
+
+```csharp
+const double PI = 3.14159;
+```
+
+### **2) readonly 읽기 전용**
+
+- `readonly`는 필드(멤버변수)에 앞에 붙여서 **생성될 때(생성자)** 값이 정해지고 그 이후에는 **바꿀 수 없다**를 보장하는 키워드이다.
+
+```csharp
+class Person {
+    public readonly int Id;
+    public A(int id) { Id = id; }
+}
+```
+
+**생성자란?**
+
+```csharp
+Calculator cal = new Calculator();
+```
+
+- `Calculator` → **클래스**
+- `cal` → **참조 변수(객체를 담는 변수)**
+- `new` → **새 객체(인스턴스) 생성 키워드**
+- `Calculator()` → **생성자**
+- `new Calculator()` → **객체**
+
+### const와 readonly 차이
+
+- `const`: **컴파일부터** 고정
+- `readonly`: **객체가 생성될 때** 값이 정해지고 이후 고정
+
+### 3) var(암시적 타입, 타입 추론)
+
+컴파일러가 **타입을 결정**해주는 선언 방식
+
+- **반드시 선언과 동시에 초기화**해야 한다.
+- 한 번 정해진 타입은 **바뀌지 않는다.**
+
+```csharp
+var x = 10;        
+var name = "hi";
+x = "abc";      // 불가능 (x는 이미 int형으로 확정되었기 때문)
+```
+
+- 타입이 길 때 사용하면 좋다.
+
+```csharp
+var list =new List<Dictionary<string,int>>(); //var 
+List<Dictionary<string, int>> list = new List<Dictionary<string, int>>();
+
+var dict = new Dictionary<string, int>(); //var 
+Dictionary<string, int> dict = new Dictionary<string, int>();
+```
+
+### 4) Nullable(`int?` `double?` `string?` `bool?`)
+
+`T?` 는 `Nullable<T>`의 축약 문법으로 값 형식이 `null`도 가질 수 있게 해주는 타입이다. `bool?` 에도 다음 세 가지 값 중 하나를 할당할 수 있다.(`true`, `false`, `null`)
+
+```csharp
+int? A = null; //가능
+int B = null;  //불가능
+```
