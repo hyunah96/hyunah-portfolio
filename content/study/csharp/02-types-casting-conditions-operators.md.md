@@ -1,0 +1,322 @@
+---
+title: 기본형, 형변환, 조건문, 연산자
+---
+### 1. 기본형
+
+### 기본형이란?
+
+- **기초 데이터 타입**
+- 변수에 담을 값의 **형태(종류)를** 정해준다.
+
+### int(정수)
+
+- 소수점 없는 숫자
+- `int / int` 나눗셈 결과는 **int** (소수점 버림)
+
+```csharp
+int a =10;
+int b =-5;
+int x =5 /2; //2
+```
+
+### double, float(실수)
+
+- `double`
+    - 기본 실수 리터럴 ex) `3.14` 타입이라 **기본값처럼 가장 자주 사용**
+    - `float`보다 **정밀도가 높다.**
+- `float`
+    - `double`보다 **메모리를 절반만 사용**하지만 **정밀도는 낮다.**
+    - **대량 데이터, 그래픽 게임**처럼 메모리·성능이 중요할 때 사용
+    - `float` 리터럴은 `f` 필요 ex) `3.14f`
+
+```csharp
+float f = 3.14f;     // f 필수
+double d = 3.14; 
+
+//정밀도 예시
+float f = 1f / 3f;
+double d = 1.0 / 3.0;
+
+Console.WriteLine(f); // 0.33333334 처럼 더 빨리 오차가 생김
+Console.WriteLine(d); // 0.3333333333333333 처럼 더 정밀
+```
+
+### bool (논리형)
+
+- `true`,`false`
+
+```csharp
+bool isOk =true;
+bool isAdult = (20 >=19);// true
+```
+
+### string (문자열)
+
+- 문자 데이터를 저장
+- 큰따옴표 `" "` 사용
+
+```csharp
+string name ="Hyunah";
+```
+
+**string의 불변성**
+
+- `string`은 **불변타입**으로 한 번 만들어진 문자열 객체의 내용은 변경되지 않는다.
+- 문자열을 수정하는 코드도 실제로는 **새 문자열 객체를 만들어서** 변수에 다시 **연결(참조)하는** 것이다. (**새 문자열 생성 + 재할당)**
+
+**예제1**
+
+```csharp
+string s ="Hello";
+s +=" World";// 기존 "Hello"에서 변경되는 것이 아닌 "Hello World" 새 문자열 객체가 생성
+Console.WriteLine(s);
+```
+
+- 문자열을 많이 이어붙이면(`+`, `+=`) 그때마다 새 객체가 생겨서 **메모리 비용**이 커질 수 있다.
+
+**StringBuilder 사용**
+
+- 문자열을 여러 번 이어붙일 때는 `StringBuilder`가 **효율적**
+- `StringBuilder`는 내부에 **바꿀 수 있는 버퍼**를 가지고 있어 `Append` 할 때마다 기존 내용을 매번 새로 복사해서 만들지 않고 같은 버퍼에 **추가**해 나간다.
+
+```csharp
+using System.Text;
+
+var sb = new StringBuilder();
+sb.Append("Hello");
+sb.Append(" World");
+string result = sb.ToString();
+```
+
+**IsNullOrEmpty**
+
+- **null 이거나 "" 일 때 true**
+- 공백은 의미가 있을 때 사용한다. **(” “는 false이기 때문이다.)**
+
+**IsNullOrWhiteSpace**
+
+- **null 이거나 "" 이거나 " ", \n 처럼 공백 문자만 있어도 true**
+
+### 2. 형변환(Parse / TryParse)
+
+### 암시적 형변환
+
+- 작은 범위 → 큰 범위로 갈 때 **자동**으로 된다.
+
+```csharp
+int i =10;
+double d = i;// 10.0
+```
+
+### 명시적 형변환 (강제)
+
+- 큰 범위 → 작은 범위는 **직접 캐스팅** 해야 한다.
+
+```csharp
+double d =3.9;
+int i = (int)d;// 3
+```
+
+---
+
+### int.Parse / double.Parse
+
+- 변환하려는 문자열이 숫자가 아니면 **에러(예외)가** 발생한다.
+
+```csharp
+int n =int.Parse("123");// 에러 없음
+int n2 = int.Parse("abc");  // 예외 발생
+```
+
+### TryParse
+
+- 실패해도 **에러(예외)를 발생하지 않고** `false`를 반환한다.
+- **안전**하게 입력 검증 가능
+
+```csharp
+bool ok =int.TryParse("123",out int n);// ok=true, n=123
+bool ok2 =int.TryParse("abc",out int m);// ok2=false, m=0
+```
+
+### 3. 조건문
+
+### if / else if / else
+
+- 여러 조건을 **위에서부터 순서대로 검사**
+- **처음 true가 된 블록만 실행**하고 끝난다.
+
+### if 기본 형태
+
+```csharp
+if (조건식1)
+{
+	// 실행 코드
+}
+else if (조건식2)
+{
+	// 실행 코드
+}
+else
+{
+	// 실행 코드
+}
+```
+
+### 한 줄 if
+
+- 한 줄일 땐 **중괄호 생략**이 가능하다.
+
+```csharp
+if (x >0) 
+		Console.WriteLine("양수");
+```
+
+### 할인 적용하기
+
+```csharp
+static void Main(string[] args)
+{
+    //물건의 가격이 10,000원 이상이면 price에서 10 % 할인을 적용하고,
+    //그렇지 않으면 할인 없이 그대로 출력
+
+    Console.WriteLine("물건의 가격을 입력하세요");
+
+    int.TryParse(Console.ReadLine(), out int price);
+
+    if (price >= 10000)
+    {
+        price = price - (price / 10);
+        Console.WriteLine($"할인된 가격은 ? {price}");
+    }
+    else
+    {
+        Console.WriteLine($"할인 적용 대상이 아닙니다 가격은? {price}");
+    }
+```
+
+### switch
+
+```csharp
+switch (Operator)
+    {
+        case "+":
+            result = firstInput + secondInput;
+            break;
+        case "-":
+            result = firstInput - secondInput;
+            break;
+        case "*":
+            result = firstInput * secondInput;
+            break;
+        case "/":
+            result = firstInput / secondInput;
+            break;
+       default:
+			result = 0;
+    }
+```
+
+### switch 표현식
+
+```csharp
+int result = Operator switch
+{
+    "+" => firstInput + secondInput,
+    "-" => firstInput - secondInput,
+    "*" => firstInput * secondInput,
+    "/" => firstInput / secondInput,
+    _   => 0
+};
+
+Console.WriteLine(result);
+
+```
+
+### 간단 계산기 만들기
+
+```csharp
+static void Main(string[] args)
+{
+    //첫번째 값 입력받기
+    Console.WriteLine("첫번째 숫자를 입력하세요");
+    int.TryParse(Console.ReadLine(), out int firstInput);
+
+    //연산자 + - / *
+    Console.WriteLine("연산자를 입력하세요");
+    string? Operator = Console.ReadLine();
+
+    //두번째 값 입력받기
+    Console.WriteLine("두번째 숫자를 입력하세요");
+    int.TryParse(Console.ReadLine(), out int secondInput);
+
+    int result = 0;
+
+    switch (Operator)
+    {
+        case "+":
+            result = firstInput + secondInput;
+            break;
+        case "-":
+            result = firstInput - secondInput;
+            break;
+        case "*":
+            result = firstInput * secondInput;
+            break;
+        case "/":
+            result = firstInput / secondInput;
+            break;
+    }
+    Console.WriteLine($"결과는 {result}");
+```
+
+### 4. 연산자
+
+### 비교 연산자
+
+**조건식**에서 **결과**는 항상 `bool`(`true`/`false`)로 나온다.
+
+|연산자|의미|예시|
+|---|---|---|
+|`==`|같다|`a == b`|
+|`!=`|다르다|`a != b`|
+|`>`|크다|`a > b`|
+|`<`|작다|`a < b`|
+|`>=`|크거나 같다|`a >= b`|
+|`<=`|작거나 같다|`a <= b`|
+
+- `=` 는 **대입**, `==` 는 **비교**
+
+```csharp
+int a =10;// 대입
+bool same = (a ==10);// 비교
+```
+
+### 논리 연산자
+
+### AND / OR / NOT
+
+| 연산자    | 의미  | true 조건             |
+| ------ | --- | ------------------- |
+| `&&`   | AND | 둘 다 true            |
+| `\|\|` | OR  | 둘 다 false일 때만 false |
+| `!`    | NOT | true↔false 뒤집기      |
+
+```csharp
+bool a =true;
+bool b =false;
+
+Console.WriteLine(a && b);// false
+Console.WriteLine(a || b);// true
+Console.WriteLine(!a);// false
+```
+
+### 삼항 연산자
+
+- 조건식이 `true`면 `값1`
+- 조건식이 `false`면 `값2`
+
+```csharp
+(조건식) ? 값1 : 값2
+
+string type = (age >= 19) ? "성인" : "미성년자";
+```
