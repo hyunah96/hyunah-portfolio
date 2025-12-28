@@ -1,8 +1,10 @@
+---
+title: .NET과 콘솔 입출력, 변수 기초
+---
+
 ### 1. .NET 이란?
 
-.NET은 마이크로소프트가 만든 개발 플랫폼으로 그 위에서 다양한 프로젝트 템플릿으로 (콘솔/WPF/Web API 등) <br>
-애플리케이션을 개발하고 실행할 수 있다.
-![](../../assets/dotnet.png)
+.NET은 마이크로소프트가 만든 개발 플랫폼으로 그 위에서 다양한 프로젝트 템플릿으로 (콘솔/WPF/Web API 등) <br>애플리케이션을 개발하고 실행할 수 있다.
 
 ### 2. 콘솔(Console) 입출력(Console I/O)
 
@@ -63,7 +65,7 @@ Console.WriteLine(string.Format("이름은 : {0}", inputName));
 - **메서드 블록 `{ }` 스코프 안**에서 선언되는 변수
 - 선언된 **블록(스코프)** 안에서만 사용 가능하며 블록을 벗어나면 접근할 수 없다.
 
-**예제 1)**
+**예제 1**
 
 ```csharp
 class Program //클래스
@@ -84,7 +86,7 @@ class Program //클래스
 }
 ```
 
-**예제 2)**
+**예제 2**
 
 ```csharp
 class Program //Program 클래스
@@ -103,9 +105,9 @@ class Program //Program 클래스
 
         Console.WriteLine(localB); //불가능
     }
-			public void Woojae() //Woojae 메서드
+			public void TEST() //TEST 메서드
 			{
-					Console.WriteLine(localA); //Hyunah 메서드에 선언된 지역 변수이므로 불가능
+				Console.WriteLine(localA); //Hyunah 메서드에 선언된 지역 변수이므로 불가
 			}
 }
 ```
@@ -140,7 +142,7 @@ class Program
 
 ### 6. 전역처럼 쓰고 싶을 때 가장 많이 쓰는 2가지
 
-### 1) 필드 Field (멤버 변수)
+### 필드 Field (멤버 변수)
 
 - **실제 값을 저장하는 공간**
 - 필드는 클래스 내부에 선언된 변수로 객체의 상태를 저장하며 보통 `private`로 숨기고 프로퍼티를 통해 안전하게 접근한다.
@@ -157,7 +159,7 @@ class Person {
 ### 프로퍼티(property)
 
 - `get`, `set`접근자를 사용하여 필드의 값을 설정하거나 가져올 수 있다.
-- 프로퍼티명은 관례적으로 PascalCase(대문자) ****사용
+- 프로퍼티명은 관례적으로 PascalCase(대문자) 사용
 
 ```csharp
 public string Name { get; set; }; public int Age { get; set; }
@@ -195,7 +197,7 @@ public string Name
 } 
 ```
 
-### 2) static
+### static
 
 - `static`은 **클래스 기준으로 1개만 존재**
 - 여러 객체가 만들어져도 같은 값을 공유
@@ -209,7 +211,7 @@ class Game
 
 - 어디서든 `Game.Score` 으로 선언하여 접근 가능하다.
 
-### 3) 인스턴스
+### 인스턴스
 
 - **객체를 만든 다음에만** 호출 가능
 - 각 객체가 가진 상태(데이터)를 사용/변경하는 기능 느낌
@@ -221,7 +223,7 @@ c.Add(1, 2);
 
 ### 7. 변수 선언과 사용 규칙 정리
 
-### **1) const(상수)**
+### **const(상수)**
 
 - **컴파일 시 값이 고정**
 - 한 번 정하면 절대 변경 불가
@@ -230,7 +232,7 @@ c.Add(1, 2);
 const double PI = 3.14159;
 ```
 
-### **2) readonly 읽기 전용**
+### **readonly 읽기 전용**
 
 - `readonly`는 필드(멤버변수)에 앞에 붙여서 **생성될 때(생성자)** 값이 정해지고 그 이후에는 **바꿀 수 없다**를 보장하는 키워드이다.
 
@@ -258,7 +260,7 @@ Calculator cal = new Calculator();
 - `const`: **컴파일부터** 고정
 - `readonly`: **객체가 생성될 때** 값이 정해지고 이후 고정
 
-### 3) var(암시적 타입, 타입 추론)
+### var(암시적 타입, 타입 추론)
 
 컴파일러가 **타입을 결정**해주는 선언 방식
 
@@ -281,7 +283,7 @@ var dict = new Dictionary<string, int>(); //var
 Dictionary<string, int> dict = new Dictionary<string, int>();
 ```
 
-### 4) Nullable(`int?` `double?` `string?` `bool?`)
+### Nullable(`int?` `double?` `string?` `bool?`)
 
 `T?` 는 `Nullable<T>`의 축약 문법으로 값 형식이 `null`도 가질 수 있게 해주는 타입이다. `bool?` 에도 다음 세 가지 값 중 하나를 할당할 수 있다.(`true`, `false`, `null`)
 
