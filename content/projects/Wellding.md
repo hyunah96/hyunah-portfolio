@@ -34,9 +34,31 @@ Wellding은 사용자가 다양한 업체를 직접 비교, 탐색하고, 후기
 - 형상관리 : GIT, GIT HUB, SOURCETREE
 - API : KakaoPay, KakaoMap
 
-### 상세 구현 과정
+### 상세 기능
 
 **STEP1. 로그인 및 회원가입**
 
  ![회원가입](./img/login-merge.png) 
 ![아이디 비밀번호 찾기](./img/id_pw.png)
+**공지사항**
+![공지사항](./img/notice.png)
+
+**쿠폰 발급**
+![쿠폰 페이지](./img/cupon.png)![쿠폰 발급](./img/cupon2.png)
+
+<p>
+  <img src="./img/cupon.png" alt="회원가입" width="48%">
+  <img src="./img/cupon2.png" alt="아이디체크" width="48%">
+</p>
+
+**웨딩홀 목록**
+![웨딩홀 목록](./img/weddingHall.png)
+**업체 리뷰**
+![업체 리뷰](./img/review.png)
+**노하우 공유**
+![노하우 공유](./img/knowhow.png)
+![노하우 공유2](./img/knowhow2.png)
+
+**위치**
+![위치](./img/location.png)
+
