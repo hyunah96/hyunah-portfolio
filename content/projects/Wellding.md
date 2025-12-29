@@ -1,4 +1,3 @@
-
 ### 🔗Link
 
 https://github.com/hyunah96/Story 
@@ -34,31 +33,58 @@ Wellding은 사용자가 다양한 업체를 직접 비교, 탐색하고, 후기
 - 형상관리 : GIT, GIT HUB, SOURCETREE
 - API : KakaoPay, KakaoMap
 
-### 상세 기능
-
-**STEP1. 로그인 및 회원가입**
-
- ![회원가입](./img/login-merge.png) 
-![아이디 비밀번호 찾기](./img/id_pw.png)
-**공지사항**
-![공지사항](./img/notice.png)
-
-**쿠폰 발급**
-![쿠폰 페이지](./img/cupon.png)![쿠폰 발급](./img/cupon2.png)
+### STEP1. 상세 페이지
 
 <p>
-  <img src="./img/cupon.png" alt="회원가입" width="48%">
-  <img src="./img/cupon2.png" alt="아이디체크" width="48%">
+  <img src="./img/login-merge.png" alt="회원가입" width="90%">
+</p>
+<p>
+  <img src="./img/id_pw.png" alt="아이디 비밀번호 찾기" width="90%">
+</p>
+<p>
+  <img src="./img/notice.png" alt="공지사항" width="48%">
+  <img src="./img/location.png" alt="위치" width="48%">
+</p>
+<p>
+  <img src="./img/weddingHall.png" alt="웨딩홀목록1" width="48%">
+  <img src="./img/weddingHall2.png" alt="웨딩홀목록2" width="48%">
 </p>
 
-**웨딩홀 목록**
-![웨딩홀 목록](./img/weddingHall.png)
-**업체 리뷰**
-![업체 리뷰](./img/review.png)
-**노하우 공유**
-![노하우 공유](./img/knowhow.png)
-![노하우 공유2](./img/knowhow2.png)
+<p>
+  <img src="./img/planner.png" alt="플래너1" width="48%">
+  <img src="./img/planner2.png" alt="플래너2" width="48%">
+</p>
 
-**위치**
-![위치](./img/location.png)
+<p>
+  <img src="./img/studio.png" alt="스튜디오1" width="48%">
+  <img src="./img/studio2.png" alt="스튜디오2" width="48%">
+</p>
+<p>
+  <img src="./img/dress.png" alt="dress" width="48%">
+  <img src="./img/dress2.png" alt="dress2" width="48%">
+</p>
+<p>
+  <img src="./img/makeup.png" alt="메이크업" width="48%">
+  <img src="./img/basket.png" alt="장바구니" width="48%">
+</p>
+<p>
+  <img src="./img/pay.png" alt="결제" width="48%">
+  <img src="./img/pay2.png" alt="결제2" width="48%">
+</p>
+<p>
+  <img src="./img/review.png" alt="업체리뷰" width="48%">
+  <img src="./img/knowhow.png" alt="노하우공유" width="48%">
+</p>
+<p>
+  <img src="./img/cupon.png" alt="쿠폰1" width="48%">
+  <img src="./img/cupon2.png" alt="쿠폰2" width="48%">
+</p>
 
+### 🔗kakaopay API
+
+https://developers.kakaopay.com/docs/getting-started/api-common-guide/restapi
+
+### STEP2. DataBase ERD
+
+### STEP3. MVC 패턴 적용
+페이지를 `Model`, `View`, `Controller`로 분리하여 단위 별로 의존성을 줄이려고 노력했습니다.
