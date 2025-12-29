@@ -86,5 +86,106 @@ https://developers.kakaopay.com/docs/getting-started/api-common-guide/restapi
 
 ### STEP2. DataBase ERD
 
+![ERD](./img/erd.png)
+
 ### STEP3. MVC 패턴 적용
 페이지를 `Model`, `View`, `Controller`로 분리하여 단위 별로 의존성을 줄이려고 노력했습니다.
+아래는 회원가입 로직 부분입니다.
+#### Model
+
+```java
+public class WDUser implements Serializable{
+	private String userId;    		// 아이디
+	private String userPwd;   		// 비밀번호
+	private String userName;  		// 이름
+	private String userNickname;	        // 닉네임
+	private String userNumber;		// 전화번호
+	private String userEmail; 		// 이메일
+	private String userGender;		// 성별 
+	private String status;    		// 상태 (Y:정상/N:정지 OR 인증 전/ D:탈퇴)
+	private String regDate;  		// 회원 등록일
+	private String marrytDate;		// 결혼 예정일
+	private int userPoint;		        // 포인트(환불 취소 용도)
+	private int uCheck;                     // 이메일 인증
+}
+```
+#### View
+```js
+$("#btnReg").on("click", function () {
+  $.ajax({
+    type: "POST",
+    url: "/user/regProc",
+    data: {
+      id: $("#id").val(),
+      pwd1: $("#pwd1").val(),
+      name: $("#name").val(),
+      number: $("#number").val(),
+      year: $("#year").val(),
+      month: $("#month").val(),
+      day: $("#day").val(),
+      gender: $("#gender").val(),
+      nickname: $("#nickname").val(),
+      email: $("#email").val(),
+      uCheck: $("#uCheck").val()
+    },
+    success: function (res) {
+      if (res.code == 0) {
+        alert("회원가입 성공!");
+        location.href = "/";   // 메인 페이지 이동
+      } else {
+        alert("회원가입 실패: " + res.message);
+      }
+    }
+  });
+});
+
+```
+
+#### Controller
+```java
+@RequestMapping(value="/user/regProc", method={RequestMethod.GET, RequestMethod.POST})
+@ResponseBody
+public Response<Object> regProc(HttpServletRequest request) {
+
+  Response<Object> ajaxResponse = new Response<>();
+
+  String userId   = HttpUtil.get(request, "id", "");
+  String userPwd  = HttpUtil.get(request, "pwd1", "");
+  String userName = HttpUtil.get(request, "name", "");
+  String phone    = HttpUtil.get(request, "number", "");
+
+  String marry = HttpUtil.get(request, "year", "") +
+                 HttpUtil.get(request, "month", "") +
+                 HttpUtil.get(request, "day", "");
+
+  String gender   = HttpUtil.get(request, "gender", "");
+  String nickName = HttpUtil.get(request, "nickname", "");
+  String email    = HttpUtil.get(request, "email", "");
+  int uCheck      = HttpUtil.get(request, "uCheck", 0);
+
+  WDUser wdUser = new WDUser();
+  wdUser.setUserId(userId);
+  wdUser.setUserPwd(userPwd);
+  wdUser.setUserName(userName);
+  wdUser.setUserNumber(phone);
+  wdUser.setMarrytDate(marry);
+  wdUser.setUserGender(gender);
+  wdUser.setUserNickname(nickName);
+  wdUser.setUserEmail(email);
+  wdUser.setStatus("Y");
+  wdUser.setuCheck(uCheck);
+
+  if(!StringUtil.isEmpty(userId) && !StringUtil.isEmpty(userPwd) && !StringUtil.isEmpty(userName)) {
+    if(wduserService.userInsert(wdUser) > 0) {
+      ajaxResponse.setResponse(0, "Success");
+      wdcouponservice.couponInsert(userId); // 가입 쿠폰 자동 지급
+    } else {
+      ajaxResponse.setResponse(500, "Bad Request");
+    }
+  } else {
+    ajaxResponse.setResponse(400, "Bad Request");
+  }
+
+  return ajaxResponse;
+}
+```
