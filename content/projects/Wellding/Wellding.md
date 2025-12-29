@@ -1,8 +1,7 @@
 
 ### 🔗Link
 
-https://github.com/hyunah96/Story <br>
-https://youtu.be/20Sjby3gBOI?si=B2kZ28EJ1_sPhqrm
+https://github.com/hyunah96/Story 
 
 ### 프로젝트 배경
 
