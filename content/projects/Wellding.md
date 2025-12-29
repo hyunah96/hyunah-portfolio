@@ -89,7 +89,7 @@ https://developers.kakaopay.com/docs/getting-started/api-common-guide/restapi
 ![ERD](./img/erd.png)
 
 ### STEP3. MVC 패턴 적용
-페이지를 `Model`, `View`, `Controller`로 분리하여 단위 별로 의존성을 줄이려고 노력했습니다.
+페이지를 `Model`, `View`, `Controller`로 분리하여 단위 별로 의존성을 줄이려고 노력했습니다.<br>
 아래는 회원가입 로직 부분입니다.
 #### Model
 
