@@ -103,6 +103,7 @@ class Program
 ### TimeSpan
 - **시간의 간격(기간, duration)** 을 표현하는 타입이다.
 - `Subtract`는 숫자만 바로 넣을 수는 없고, `TimeSpan`(시간 간격)을 넣어야 한다.
+
 **Subtract 예제**
 ```csharp
 using System;
