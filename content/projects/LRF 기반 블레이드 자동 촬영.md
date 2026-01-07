@@ -302,12 +302,8 @@ public void uploadFileToFTP(File localfile, String fileName) {
 - **결과 요약:**
     - 1차 테스트에서 자동 촬영 트리거의 기본 동작과 안정성을 확인했고, 촬영 알고리즘 개선을 위한 데이터를 확보함
 		<p>
-		  <img src="./img/test1.JPG" alt="1" width="48%">
-		  <img src="./img/test2.JPG" alt="2" width="48%">
-		</p>
-		<p>
-  <img src="./img/0011.jpg" alt="웨딩홀목록1" width="48%">
-  <img src="./img/DJI_20240925122327_0013_Z.jpg" alt="웨딩홀목록2" width="48%">
+  <img src="./img/test1.jpg" alt="웨딩홀목록1" width="48%">
+  <img src="./img/test2.jpg" alt="웨딩홀목록2" width="48%">
 </p>
     - 2차 테스트에서는 허브(Hub) 근처 영역은 비교적 안정적으로 촬영되었으나, 블레이드 팁(Blade Tip) 영역은 정확도가 낮아지는 경향을 확인함<br>
 <details>
@@ -338,7 +334,7 @@ public void uploadFileToFTP(File localfile, String fileName) {
 
 #### 3-3) 개선 계획
 - DJI M30 대신 자체 제작 드론을 사용하고, 고속 연사가 가능한 짐벌 카메라와 온보드 컴퓨터를 탑재하는 방향으로 <br>구성을 변경할 예정
-- 데이터는 이더넷(Ethernet) 유선 통신으로 연결하여 무선 대비 지연을 줄이고 데이터 전송을 더 안정적으로 만들 계획
+- 데이터는 이더넷 통신으로 연결하여 무선 대비 지연을 줄이고 데이터 전송을 더 안정적으로 만들 계획
 - 촬영 데이터를 충분히 모은 뒤, 이를 기반으로 AI 손상/정상 분석(학습,추론) 단계로 확장할 예정
 
 
