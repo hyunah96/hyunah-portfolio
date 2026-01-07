@@ -149,12 +149,13 @@ public class FTPConnectionManager {
             }
         return session;
     }
+```
 </details>
 <details>
 <summary><b>shootPhotoEvent() (촬영 이벤트 감지)</b></summary>
 ```java
     `//촬영 이벤트 감지 메서드     @Subscribe(threadMode = ThreadMode.MAIN)     public void shootPhotoEvent(ShootPhotoEvent shootPhotoEvent) {         IMediaManager mediaManager = MediaDataCenter.getInstance().getMediaManager();         //파일 목록 변경 감지         mediaManager.addMediaFileListStateListener(new MediaFileListStateListener() {             @Override             public void onUpdate(MediaFileListState mediaFileListState) {                 Log.d("test", "onUpdate ");                  Log.d("test", "MediaFileListState.UP_TO_DATE ");                 pollForMediaFiles(mediaManager);             }         });         MediaFileFilter mediaFileFilter = MediaFileFilter.PHOTO;         PullMediaFileListParam param = new PullMediaFileListParam.Builder().filter(mediaFileFilter).build();         //파일 목록 가져오기         mediaManager.pullMediaFileListFromCamera(param, new CommonCallbacks.CompletionCallback() {             @Override             public void onSuccess() {                 Log.d("test", "onSuccess");                 onUpdate = true;                 pollForMediaFiles(mediaManager);             }             @Override             public void onFailure(@NonNull IDJIError idjiError) {                 Log.d("test", "onFailure" + idjiError);             }         });     }`
-
+```
 </details>
 
 영광 테스트베드
