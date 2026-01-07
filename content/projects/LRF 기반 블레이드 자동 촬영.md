@@ -77,34 +77,34 @@ private void updateCameraForegroundResource(@NonNull CameraPhotoState cameraPhot
 **LRF 거리값 수신 → 유효값 필터링 → 촬영 트리거**
 ```java
 try {
-    KeyManager.getInstance().setValue(
-            KeyTools.createKey(CameraKey.KeyLaserWorkMode),
-            LaserWorkMode.OPEN_ALWAYS,
-            new CommonCallbacks.CompletionCallback() {
-                @Override
-                public void onSuccess() {
-                    KeyManager.getInstance().listen(
-                        KeyTools.createKey(CameraKey.KeyLaserMeasureInformation),
-                            this,
-                            (oldValue, newValue) -> {
-                                newValue = KeyManager.getInstance().getValue(
-                        KeyTools.createKey(CameraKey.KeyLaserMeasureInformation)
-                                );
-                                if (newValue != null) {
-                                    final double min_distance = 3.0;
-                                    double currentDistance =newValue.getDistance();
-                                    double test = Math.abs(currentDistance -previousDistance);
-                                    if (previousDistance == -1) {
-                                        previousDistance = currentDistance;
-                                    }
-                                    if (currentDistance < min_distance
-                                            || Math.abs(currentDistance - previousDistance) >= 10) {
-                                    } else {
-                                        if (currentDistance >= 5.0 && currentDistance <= 6.0) {
-                                            actionOnShootingPhoto();
-                                        }
-                                    }
-                                    laserDistance.setText(String.format("%.2f m", currentDistance));
+KeyManager.getInstance().setValue(
+	KeyTools.createKey(CameraKey.KeyLaserWorkMode),
+	LaserWorkMode.OPEN_ALWAYS,
+	new CommonCallbacks.CompletionCallback() {
+@Override
+public void onSuccess() {
+KeyManager.getInstance().listen(
+KeyTools.createKey(CameraKey.KeyLaserMeasureInformation),
+	this,
+	(oldValue, newValue) -> {
+		newValue = KeyManager.getInstance().getValue(
+KeyTools.createKey(CameraKey.KeyLaserMeasureInformation)
+		);
+		if (newValue != null) {
+			final double min_distance = 3.0;
+			double currentDistance =newValue.getDistance();
+			double test = Math.abs(currentDistance -previousDistance);
+			if (previousDistance == -1) {
+				previousDistance = currentDistance;
+			}
+			if (currentDistance < min_distance
+					|| Math.abs(currentDistance - previousDistance) >= 10) {
+			} else {
+				if (currentDistance >= 5.0 && currentDistance <= 6.0) {
+					actionOnShootingPhoto();
+				}
+			}
+			laserDistance.setText(String.format("%.2f m", currentDistance));
 ```
 **FTPConnectionManager**
 ```java
@@ -214,23 +214,23 @@ private void pollForMediaFiles(IMediaManager mediaManager){
 ```java
 //외부저장소로 업데이트
 private void handleFiles(MediaFile latestFile){
-    Log.d("test","handleFiles");
+    Log.d("TAG","handleFiles");
     var savePath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
     File localfile = new File(savePath,latestFile.getFileName());
     try {
         fos = new FileOutputStream(localfile,true);
     } catch (Exception e){
-        Log.d("test","file Exception : "+ e);
+        Log.d("TAG","file Exception : "+ e);
     }
     latestFile.pullOriginalMediaFileFromCamera(0, new MediaFileDownloadListener() {
         @Override
         public void onStart() {
-            Log.d(" test","onStart");
+            Log.d(" TAG","onStart");
         }
         @Override
         public void onProgress(long total, long current) {
             double num = (double) current/total * 100;
-            Log.d("test","파일명 : " + latestFile.getFileName() + " 다운로드 : " + num);
+            Log.d("TAG","파일명 : " + latestFile.getFileName() + " 다운로드 : " + num);
         }
         @Override
         public void onRealtimeDataUpdate(byte[] data, long position) {
@@ -238,14 +238,14 @@ private void handleFiles(MediaFile latestFile){
                 fos.write(data);
                 fos.flush();
             } catch (IOException e) {
-                Log.d("test","onRealtimeDataUpdate error : "+ e);
+                Log.d("TAG","onRealtimeDataUpdate error : "+ e);
             }
         }
         @Override
         public void onFinish() {
             Log.d("test","onFinish");
             if(localfile.exists()) {
-                Log.d("test","onFinish localfile.exists()");
+                Log.d("TAG","onFinish localfile.exists()");
                 uploadFileToFTP(localfile,latestFile.getFileName());
             }
         }
@@ -286,7 +286,38 @@ public void uploadFileToFTP(File localfile, String fileName) {
 }
 ```
 </details>
+### STEP3. 테스트 결과
+#### 3-1) 현장 테스트 요약
+- **장소/날짜:** 백수읍 풍력단지 (전남 영광)
+- **테스트 목적:**
+	**1차**
+    - LRF기반 거리 측정을 통해 풍력발전기와의 안전 거리 현장 검증
+    - LRF 감지 조건에서 짐벌 카메라의 초당 촬영 가능 횟수를 검증
+	**2차**
+    - 짐벌 카메라의 줌(Zoom) 기능을 활용해 블레이드 감지 이후 자동 연속 촬영 기능의 적용 가능성을 검증
+- **테스트 시나리오:**
+    - LRF 거리값 수신 → 유효값 필터링 → 촬영 트리거 동작 확인
+    - 줌(최대 줌) 상태에서 블레이드 감지 시 자동 연속 촬영 관찰
+- **결과 요약:**
+    - 1차 테스트에서 자동 촬영 트리거의 기본 동작과 안정성을 확인했고, 촬영 알고리즘 개선을 위한 데이터를 확보함
+    - 2차 테스트에서는 허브(Hub) 근처 영역은 비교적 안정적으로 촬영되었으나, 블레이드 팁(Blade Tip) 영역은 정확도가 낮아지는 경향을 확인함
+#### 3-2) 성능 한계 분석
+- **팁(Blade Tip) 구간 촬영 정확도 저하**
+    - **관찰:** 블레이드 회전 속도는 바람 조건에 따라 변동하며 저속 회전에서는 촬영 정확도가 비교적 안정적이었음. 반면 고속 회전에서는 팁영역에서 블러, 프레임 이탈이 증가하는 경향을 확인함.
+    - **원인:** 팁은 회전 반경이 가장 크기 때문에 이동 속도가 가장 빠른 구간이므로, 셔터 타이밍이 조금만 어긋나도 피사체가 프레임을 벗어나거나 흐리게 촬영됨.
+    - **장비 제약:** 사용한 짐벌 DJI Zenmuse H20은 고화질 정밀 촬영에 최적화되어 있지만 고속 회전 물체를 연속 촬영하는 시나리오에서는 촬영 속도 측면의 한계를 확인함.
+- **초점 이탈(포커스 풀림)로 인한 흐림 현상**
+    - **관찰:** 블레이드의 회전 속도와 무관하게, 일부 촬영 결과에서 초점이 맞지 않아 전체 프레임이 흐릿하게 기록되는 사례가 발생함.
+    - **예상 원인:**
+        - 줌(Zoom) 사용 시 초점 민감도 증가
+        - 바람에 의한 기체의 흔들림으로 인한 초점 이탈
+    - **개선 방향:**
+        - 짐벌 카메라의 초점 상태(짐벌 카메라 상태값)를 로그를 통해 실시간으로 확인하여, 줌 배율 구간별 초점 안정성을 비교하고 최적의 배율을 도출해야함
 
-영광 테스트베드
+#### 3-3) 개선 계획
+- DJI M30 대신 자체 제작 드론을 사용하고, 고속 연사가 가능한 짐벌 카메라와 온보드 컴퓨터를 탑재하는 방향으로 구성을 변경할 예정
+- 데이터는 이더넷(Ethernet) 유선 통신으로 연결하여 무선 대비 지연을 줄이고 데이터 전송을 더 안정적으로 만들 계획
+- 촬영 데이터를 충분히 모은 뒤, 이를 기반으로 AI 손상/정상 분석(학습,추론) 단계로 확장할 예정
+
 
 
