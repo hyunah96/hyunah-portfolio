@@ -293,7 +293,7 @@ public void uploadFileToFTP(File localfile, String fileName) {
 - **테스트 내용:**<br>
 	**1차**
     - LRF기반 거리 측정을 통해 풍력발전기와의 안전 거리 현장 검증
-    - LRF 감지 조건에서 짐벌 카메라의 초당 촬영 가능 횟수를 검증<br>
+    - LRF 감지 조건에서 짐벌 카메라의 초당 촬영 가능 횟수를 검증
 	**2차**
     - 짐벌 카메라의 줌(Zoom) 기능을 활용해 블레이드 감지 이후 자동 연속 촬영 기능의 적용 가능성을 검증
 - **테스트 시나리오:**
@@ -305,7 +305,7 @@ public void uploadFileToFTP(File localfile, String fileName) {
   <img src="./img/test1.jpg" alt="웨딩홀목록1" width="48%">
   <img src="./img/test2.jpg" alt="웨딩홀목록2" width="48%">
 </p>
-    - 2차 테스트에서는 허브(Hub) 근처 영역은 비교적 안정적으로 촬영되었으나, 블레이드 팁(Blade Tip) 영역은 정확도가 낮아지는 경향을 확인함<br>
+	- 2차 테스트에서는 허브(Hub) 근처 영역은 비교적 안정적으로 촬영되었으나, 블레이드 팁(Blade Tip) 영역은 정확도가 낮아지는 경향을 확인함<br><br>
 <details>
 <summary><b>2차 테스트 촬영 결과(사진) 펼치기</b></summary>
 
