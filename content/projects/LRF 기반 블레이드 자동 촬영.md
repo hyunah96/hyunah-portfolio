@@ -305,6 +305,10 @@ public void uploadFileToFTP(File localfile, String fileName) {
 		  <img src="./img/test1.JPG" alt="1" width="48%">
 		  <img src="./img/test2.JPG" alt="2" width="48%">
 		</p>
+		<p>
+  <img src="./img/0011.jpg" alt="웨딩홀목록1" width="48%">
+  <img src="./img/DJI_20240925122327_0013_Z.jpg" alt="웨딩홀목록2" width="48%">
+</p>
     - 2차 테스트에서는 허브(Hub) 근처 영역은 비교적 안정적으로 촬영되었으나, 블레이드 팁(Blade Tip) 영역은 정확도가 낮아지는 경향을 확인함<br>
 <details>
 <summary><b>2차 테스트 촬영 결과(사진) 펼치기</b></summary>
