@@ -49,10 +49,142 @@ FTP 서버에 접속/로그인 후 로컬에 저장된 촬영 파일을 업로�
 ### STEP1. 상세 페이지
 
 ![조종기1](./img/1.jpg)
+#### SD 카드 삽입 여부에 따른 촬영 모드 활성화/비활성화
 ![조종기1](./img/2.jpg)
 ![조종기1](./img/3.jpg)
+#### FTP(FileZilla)
 ![조종기1](./img/4.jpg)
 ![조종기1](./img/5.jpg)
+### STEP2. APP 개발
+**SD카드 장착 여부에 따른 촬영 활성화/비활성화**
+```java
+private void updateCameraForegroundResource(@NonNull CameraPhotoState cameraPhotoState,
+                                           @NonNull CameraPhotoStorageState cameraPhotoStorageState) {
+    Drawable foregroundDrawable = updateCameraActionSound(cameraPhotoState);
+
+    if (cameraPhotoStorageState instanceof CameraSDPhotoStorageState) {
+        CameraSDPhotoStorageState sdStorageState = (CameraSDPhotoStorageState) cameraPhotoStorageState;
+        if (cameraPhotoStorageState.getStorageLocation() == CameraStorageLocation.SDCARD) {
+            foregroundDrawable = updateResourceWithStorageInSDCard(sdStorageState);
+        } else if (cameraPhotoStorageState.getStorageLocation() == CameraStorageLocation.INTERNAL) {
+            Log.d("TAG","CameraStorageLocation.INTERNAL");
+            foregroundDrawable = updateResourceWithStorageInternal(sdStorageState);
+        }
+    }
+    storageStatusOverlayImageView.setImageDrawable(foregroundDrawable);
+}
+```
+**LRF 거리값 수신 → 유효값 필터링 → 촬영 트리거**
+```java
+try {
+    KeyManager.getInstance().setValue(
+            KeyTools.createKey(CameraKey.KeyLaserWorkMode),
+            LaserWorkMode.OPEN_ALWAYS,
+            new CommonCallbacks.CompletionCallback() {
+                @Override
+                public void onSuccess() {
+                    KeyManager.getInstance().listen(
+                        KeyTools.createKey(CameraKey.KeyLaserMeasureInformation),
+                            this,
+                            (oldValue, newValue) -> {
+                                newValue = KeyManager.getInstance().getValue(
+                        KeyTools.createKey(CameraKey.KeyLaserMeasureInformation)
+                                );
+                                if (newValue != null) {
+                                    final double min_distance = 3.0;
+                                    double currentDistance =newValue.getDistance();
+                                    double test = Math.abs(currentDistance -previousDistance);
+                                    if (previousDistance == -1) {
+                                        previousDistance = currentDistance;
+                                    }
+                                    if (currentDistance < min_distance
+                                            || Math.abs(currentDistance - previousDistance) >= 10) {
+                                    } else {
+                                        if (currentDistance >= 5.0 && currentDistance <= 6.0) {
+                                            actionOnShootingPhoto();
+                                        }
+                                    }
+                                    laserDistance.setText(String.format("%.2f m", currentDistance));
+```
+**FTP 서버로 파일 전송**
+<details>
+<summary><b>FTPConnectionManager</b></summary>
+
+```java
+package com.dji.dair.internal.repository;
+import android.net.ConnectivityManager;
+import android.net.Network;
+import android.os.Environment;
+import android.os.Handler;
+
+import com.jcraft.jsch.Channel;
+import com.jcraft.jsch.ChannelSftp;
+import com.jcraft.jsch.JSch;
+import com.jcraft.jsch.JSchException;
+import com.jcraft.jsch.Session;
+import android.util.Log;
+import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import org.apache.commons.net.ftp.FTP;
+import org.apache.commons.net.ftp.FTPClient;
+import org.apache.commons.net.ftp.FTPReply;
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
+import dji.v5.common.callback.CommonCallbacks;
+import dji.v5.common.error.IDJIError;
+import dji.v5.manager.datacenter.media.MediaFileDownloadListener;
+import dji.v5.manager.datacenter.media.MediaFileFilter;
+import dji.v5.manager.datacenter.media.MediaFileListState;
+import dji.v5.manager.datacenter.media.MediaFileListStateListener;
+import dji.v5.manager.interfaces.IMediaManager;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.SocketException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.HashSet;
+import java.util.List;
+import dji.v5.manager.datacenter.MediaDataCenter;
+import dji.v5.manager.datacenter.media.MediaFile;
+import dji.v5.manager.datacenter.media.PullMediaFileListParam;
+import dji.v5.manager.datacenter.media.MediaFileListData;
+import dji.v5.ux.visualcamera.storage.SDCardInsertedEvent;
+import dji.v5.ux.cameracore.widget.cameracapture.shootphoto.ShootPhotoEvent;
+import dji.v5.ux.visualcamera.storage.SDCardRemovedEvent;
+
+import java.util.Properties;
+import java.util.Set;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
+public class FTPConnectionManager {
+
+private FTPClient ftpClient;
+private static String server = "121.179.183.64";
+private static int port = 300;
+private static String user = "hakim";
+private static String password = "kgb0563";
+private boolean ftp_connected = false;
+private boolean onUpdate = false;
+private FileOutputStream fos;
+private FileInputStream fis;
+private ExecutorService executorService;
+private Channel channel = null;
+
+private ChannelSftp channelSftp = null;
+
+public FTPConnectionManager() {
+	EventBus.getDefault().register(this);
+	this.executorService = Executors.newSingleThreadExecutor();
+}
+```
+</details>
 영광 테스트베드
 
 
