@@ -301,7 +301,7 @@ public void uploadFileToFTP(File localfile, String fileName) {
     - 줌(최대 줌) 상태에서 블레이드 감지 시 자동 연속 촬영 관찰
 - **결과 요약:**
     - 1차 테스트에서 자동 촬영 트리거의 기본 동작과 안정성을 확인했고, 촬영 알고리즘 개선을 위한 데이터를 확보함
-		      <p>
+		<p>
 		  <img src="./img/test1.JPG" alt="1" width="48%">
 		  <img src="./img/test2.JPG" alt="2" width="48%">
 		</p>
