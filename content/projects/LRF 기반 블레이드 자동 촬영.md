@@ -127,34 +127,33 @@ public class FTPConnectionManager {
         this.executorService = Executors.newSingleThreadExecutor();
     }
 ```
-<details> <summary><b>getSFTPConnection() — SD카드 삽입 이벤트 시 FTP 로그인</b></summary>
+<details>
+<summary><b>getSFTPConnection() (SD카드 삽입 시 로그인)</b></summary>
 
-`//SD카드 삽입되면 이벤트 발생 감지하여 FTP 로그인 public static Session getSFTPConnection() throws JSchException {     JSch jSch = new JSch();     Session session = null;         try {             Log.d("test","session");             session = jSch.getSession(user, server, port);             session.setPassword(password);             Properties config = new Properties();             config.put("StricHostKeyChecking", "no");             session.setConfig(config);             session.connect();             Log.d("test","session.connect();");         } catch (Exception e){             e.printStackTrace();         }      return session; }`
-
+```java
+//SD카드 삽입되면 이벤트 발생 감지하여 FTP 로그인
+    public static Session getSFTPConnection() throws JSchException {
+        JSch jSch = new JSch();
+        Session session = null;
+            try {
+                Log.d("TAG","session");
+                session = jSch.getSession(user, server, port);
+                session.setPassword(password);
+                Properties config = new Properties();
+                config.put("StricHostKeyChecking", "no");
+                session.setConfig(config);
+                session.connect();
+                Log.d("TAG","session.connect();");
+            } catch (Exception e){
+                e.printStackTrace();
+            }
+        return session;
+    }
 </details>
-<details> <summary><b>shootPhotoEvent() — 촬영 이벤트 감지</b></summary>
-
-`//촬영 이벤트 감지 메서드 @Subscribe(threadMode = ThreadMode.MAIN) public void shootPhotoEvent(ShootPhotoEvent shootPhotoEvent) {     IMediaManager mediaManager = MediaDataCenter.getInstance().getMediaManager();     //파일 목록 변경 감지     mediaManager.addMediaFileListStateListener(new MediaFileListStateListener() {         @Override         public void onUpdate(MediaFileListState mediaFileListState) {             Log.d("test", "onUpdate ");              Log.d("test", "MediaFileListState.UP_TO_DATE ");             pollForMediaFiles(mediaManager);         }     });     MediaFileFilter mediaFileFilter = MediaFileFilter.PHOTO;     PullMediaFileListParam param = new PullMediaFileListParam.Builder().filter(mediaFileFilter).build();     //파일 목록 가져오기     mediaManager.pullMediaFileListFromCamera(param, new CommonCallbacks.CompletionCallback() {         @Override         public void onSuccess() {             Log.d("test", "onSuccess");             onUpdate = true;             pollForMediaFiles(mediaManager);         }         @Override         public void onFailure(@NonNull IDJIError idjiError) {             Log.d("test", "onFailure" + idjiError);         }     }); }`
-
-</details>
-<details> <summary><b>pollForMediaFiles() — 최신 파일 조회(폴링)</b></summary>
-
-`private void pollForMediaFiles(IMediaManager mediaManager){     Log.d("test","pollForMediaFiles");     MediaFileListData mediaFileListData = mediaManager.getMediaFileListData();     List<MediaFile> files = mediaFileListData.getData();      if(onUpdate) {         if (!files.isEmpty()) {             //Set<String> seenFileNames = new HashSet<>();             Log.d("test", "파일 갯수 " + files.size());             MediaFile mediaFile = files.get(0);             handleFiles(mediaFile);         } else {             Log.d("test", "files is empty");             new Handler().postDelayed(() -> pollForMediaFiles(mediaManager), 1000);         }     } }`
-
-</details>
-<details> <summary><b>handleFiles() — 촬영 파일 다운로드(로컬 저장)</b></summary>
-
-`//외부저장소로 업데이트 private void handleFiles(MediaFile latestFile){     Log.d("test","handleFiles");     var savePath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);     File localfile = new File(savePath,latestFile.getFileName());     try {         fos = new FileOutputStream(localfile,true);     } catch (Exception e){         Log.d("test","file Exception : "+ e);     }     latestFile.pullOriginalMediaFileFromCamera(0, new MediaFileDownloadListener() {         @Override         public void onStart() {             Log.d(" test","onStart");         }         @Override         public void onProgress(long total, long current) {             double num = (double) current/total * 100;             Log.d("test","파일명 : " + latestFile.getFileName() + " 다운로드 : " + num);         }         @Override         public void onRealtimeDataUpdate(byte[] data, long position) {             try {                 fos.write(data);                 fos.flush();             } catch (IOException e) {                 Log.d("test","onRealtimeDataUpdate error : "+ e);             }         }         @Override         public void onFinish() {             Log.d("test","onFinish");             if(localfile.exists()) {                 Log.d("test","onFinish localfile.exists()");                 uploadFileToFTP(localfile,latestFile.getFileName());             }         }         @Override         public void onFailure(IDJIError error) {         }     }); }`
-
-</details>
-<details> <summary><b>uploadFileToFTP() — FTP 업로드</b></summary>
-
-`public void uploadFileToFTP(File localfile, String fileName) {     executorService.execute(() -> {         try {             ftpClient.setFileType(FTP.BINARY_FILE_TYPE);             ftpClient.enterLocalPassiveMode();             //String serverFilePath = "/srv/ftp/" + fileName;             String serverFilePath = "/home/hakim" + fileName;             try {                 fis = new FileInputStream(localfile);                 boolean result = ftpClient.storeFile(serverFilePath,fis);                 Log.d("test","result : "+ result);                 if (!result) {                     Log.d("test", "FTP Upload Failed. Reply Code: " + ftpClient.getReplyCode() + " Reply String: " + ftpClient.getReplyString());                 }             }             catch(FileNotFoundException e){                 Log.d("test","FileNotFoundException");             }         }         catch (Exception e){             Log.d("test","uploadFileToFTP catch :"+e);         }     }); }`
-
-</details>
-<details> <summary><b>onSDCardRemoved() — SD카드 제거 시 FTP 연결 해제</b></summary>
-
-`@Subscribe public void onSDCardRemoved(SDCardRemovedEvent event) throws IOException {     Log.d("test", "FTP 연결 해제");     Log.d("test","ftpClient??? "+ ftp_connected);     if(ftpClient.isConnected() && ftp_connected) {         try {             ftpClient.logout();             //ftpClient.disconnect();             ftp_connected = false;         } catch (IOException e) {             Log.d("test", "FTP 연결 해제 도중 문제 발생 " + e);         }     } else {         Log.d("test","ftpClient.isConnected() " + ftpClient.isConnected());         Log.d("test", "ftp_connected " + ftp_connected);         Log.d("test","문제있다");     } }`
+<details>
+<summary><b>shootPhotoEvent() (촬영 이벤트 감지)</b></summary>
+```java
+    `//촬영 이벤트 감지 메서드     @Subscribe(threadMode = ThreadMode.MAIN)     public void shootPhotoEvent(ShootPhotoEvent shootPhotoEvent) {         IMediaManager mediaManager = MediaDataCenter.getInstance().getMediaManager();         //파일 목록 변경 감지         mediaManager.addMediaFileListStateListener(new MediaFileListStateListener() {             @Override             public void onUpdate(MediaFileListState mediaFileListState) {                 Log.d("test", "onUpdate ");                  Log.d("test", "MediaFileListState.UP_TO_DATE ");                 pollForMediaFiles(mediaManager);             }         });         MediaFileFilter mediaFileFilter = MediaFileFilter.PHOTO;         PullMediaFileListParam param = new PullMediaFileListParam.Builder().filter(mediaFileFilter).build();         //파일 목록 가져오기         mediaManager.pullMediaFileListFromCamera(param, new CommonCallbacks.CompletionCallback() {             @Override             public void onSuccess() {                 Log.d("test", "onSuccess");                 onUpdate = true;                 pollForMediaFiles(mediaManager);             }             @Override             public void onFailure(@NonNull IDJIError idjiError) {                 Log.d("test", "onFailure" + idjiError);             }         });     }`
 
 </details>
 
