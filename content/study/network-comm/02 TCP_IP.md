@@ -2,6 +2,7 @@
 title: TCP/IP
 tags:
   - network
+  - tcp/ip
 date: 2025-11-06
 ---
 ### TCP/IP란?
