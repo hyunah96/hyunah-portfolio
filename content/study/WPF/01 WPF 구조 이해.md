@@ -37,3 +37,45 @@ date: 2025-11-18
 ```
 ![gridRow](../img/wpf.png)
 #### `StackPanel` (세로/가로로 쌓기)
+- `StackPanel`은 안에 들어있는 컨트롤을 **한 방향으로 줄줄이 쌓아** 배치한다.
+- 기본값은 `Vertical
+- `Orientation`은 쌓는 방향 옵션
+###### `Horizontal` : 수평(왼쪽→오른쪽)
+```csharp
+<StackPanel Orientation="Horizontal">
+    <Button Content="Start" Margin="4"/>
+    <Button Content="Stop" Margin="4"/>
+</StackPanel>
+```
+![hor](../img/stackpanel_horizontal.png)
+###### `Vertical` : 수직
+```csharp
+<StackPanel Orientation="Vertical">
+    <Button Content="Start" Margin="4"/>
+    <Button Content="Stop" Margin="4"/>
+</StackPanel>
+```
+![hor](../img/stackpanel_vertical.png)
+#### `DockPanel` (상/하/좌/우에 붙이기)
+- 벽에 붙여 배치한다.
+- 컨트롤을 **Top/Bottom/Left/Right** 중 하나에 붙여 놓을 수 있다.
+- 마지막 남는 공간을 가운데가 차지하는 구조가 흔하다.
+```csharp
+<DockPanel>
+    <Border DockPanel.Dock="Top" Height="50" Background="LightGray"/>
+    <Border DockPanel.Dock="Left" Width="220" Background="WhiteSmoke"/>
+    <Border Background="White"/> //남은 공간 전부 차지
+</DockPanel>
+```
+![dock](../img/dockpanel_diagram_v2.png)
+#### `WrapPanel`
+- 컨트롤을 **왼쪽→오른쪽으로 배치**하다가 공간이 부족하면 **자동으로 다음 줄로 내려**간다.
+- 버튼이 한 줄에 다 들어가면 가로로 쭉 놓이고, 공간이 부족해지면 컨텐츠는 **아래 줄로 내려간다.**
+```csharp
+<WrapPanel>
+    <Button Content="EQ-01" Margin="4"/>
+    <Button Content="EQ-02" Margin="4"/>
+    <Button Content="EQ-03" Margin="4"/>
+</WrapPanel>
+```
+![dock](../img/wrappanel_diagram_v2.png)
