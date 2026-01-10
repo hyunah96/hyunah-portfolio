@@ -1,5 +1,5 @@
 ---
-title: WPF 구조 이해
+title: WPF 구조 이해와 Layout
 tags:
   - csharp
   - wpf
@@ -38,7 +38,7 @@ date: 2025-11-18
 ![gridRow](../img/wpf.png)
 #### `StackPanel` (세로/가로로 쌓기)
 - `StackPanel`은 안에 들어있는 컨트롤을 **한 방향으로 줄줄이 쌓아** 배치한다.
-- 기본값은 `Vertical
+- 기본값은 `Vertical`
 - `Orientation`은 쌓는 방향 옵션
 ###### `Horizontal` : 수평(왼쪽→오른쪽)
 ```csharp
