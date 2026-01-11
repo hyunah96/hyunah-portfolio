@@ -7,7 +7,7 @@ date: 2025-11-18
 ---
 ### `WPF`란?
 - WPF는 **Windows 데스크톱 UI 프레임워크**이다.
-- 화면은 **XAML(UI 선언)**, 동작은 **Code-behind(C# 이벤트/로직)**로 나뉜다.
+- 화면은 **XAML(UI 선언)**, 동작은 **Code-behind(C# 이벤트/로직)** 로 나뉜다.
 #### Visual Studio에서 프로젝트 만들기
 1. Visual Studio 실행 → **Create a new project**
 2. **WPF App (.NET) C#** 선택
