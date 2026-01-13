@@ -81,6 +81,7 @@ class Program
     }
 }
 ```
+![참조](./img/name_field_before_after_ko_v2.png)
 **배열 예제 코드**
 - 배열도 참조형이라서 같이 바뀐다.
 ```csharp
