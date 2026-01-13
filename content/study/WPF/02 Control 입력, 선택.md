@@ -1,11 +1,11 @@
 ---
-title: Control
+title: WPF 기본 컨트롤 정리(1)
 tags:
   - csharp
   - wpf
 date: 2025-11-19
 ---
-### `Control`이란?
+### `Control`
 - WPF 화면에 올리는 **UI 요소**
 - 사용자가 보고, 누르고, 입력하고, 선택하는 것들이 전부 컨트롤이다.
 ### `Control` 종류
