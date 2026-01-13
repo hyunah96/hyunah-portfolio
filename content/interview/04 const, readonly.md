@@ -36,7 +36,12 @@ class Config
 - `readonly`는 참조형에서 **재할당만 막고 내부 변경은 막지 않는다.**
 ##### readonly를 쓸 만한 상황
 - 실행할 때 정해지는 값인데, **정해진 이후엔 바뀌면 안 되는 값**
+**선언 시 초기화**
+```csharp
+public readonly string MachineName = "Default";
+```
 
+**생성자에서 값 할당**
 ```csharp
 using System;
 
