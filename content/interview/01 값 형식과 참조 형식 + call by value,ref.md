@@ -22,7 +22,7 @@ date: 2026-01-13
 - `struct`
 - `enum` 
 > **C#에서 struct로 만든 타입은 무조건 값 형식**이다.
->자세한 내용은 [[15 구조체]]를 확인
+>자세한 내용은 [[구조체]]를 확인
 
 ---
 값 형식을 함수의 인자로 전달할 때 내부에서 변수값을 변경해도 원본의 변수값은 변하지 않는다.
@@ -59,7 +59,7 @@ namespace ConsoleApp
 #### 참조 형식에 해당하는 자료형들
 
 - `class`
-- `string` (**참조형식(reference type)** 이고, 동시에 **불변(immutable)**) (링크필요)
+- `string` (**참조형식(reference type)** 이고, 동시에 **불변(immutable)**) [[study/csharp/02 기본형, 형변환, 조건문 ,연산자#string의 불변성 + 참조 재할당|string 불변성 파트]]
 - `array` (ex: `int[]`, `string[]`)
 - `object` (모든 타입의 부모)
 - `interface`
