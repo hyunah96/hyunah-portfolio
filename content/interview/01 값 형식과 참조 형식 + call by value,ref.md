@@ -26,7 +26,7 @@ date: 2026-01-13
 
 ---
 값 형식을 함수의 인자로 전달할 때 내부에서 변수값을 변경해도 원본의 변수값은 변하지 않는다.
-**다음 예제를 통해 확인**
+**값 형식 예제 코드**
 ```csharp
 using System;
 using System.Text;
@@ -49,6 +49,66 @@ namespace ConsoleApp
             TestValue(value); //value의 값 20이 복사돼서 매개변수 a로 들어감
             Console.WriteLine(value);
         }
+    }
+}
+```
+### 참조 형식(Reference type)
+- 참조 형식은 변수 값의 **데이터가 있는 위치(주소)** 를 저장한다.
+- 다른 변수에 대입하면 **주소가 복사(copy)** 된다. 즉, 두 변수가 **같은 객체(같은 데이터)를 가리킬 수 있다.**
+- 그래서 변수 값이 수정되면 원본 값도 수정된다.
+#### 참조 형식에 해당하는 자료형들
+
+- `class`
+- `string` (**참조형식(reference type)** 이고, 동시에 **불변(immutable)**) (링크필요)
+- `array` (ex: `int[]`, `string[]`)
+- `object` (모든 타입의 부모)
+- `interface`
+
+> **C#에서 class로 만든 타입은 무조건 참조 형식**이다
+
+---
+참조 형식을 함수의 인자로 전달할 때 내부에서 변수값을 변경하면 원본의 변수값도 변한다. 같은 객체를 가리키는 것이기 때문에 **그 객체의 Name 필드를 바꾸는 것**이기때문이다.
+##### 참조 형식 예제 코드
+```csharp
+using System;
+
+class Person
+{
+    public string Name;
+}
+
+class Program
+{
+    static void Main()
+    {
+        Person p1 = new Person();
+        p1.Name = "Alice";
+
+        Person p2 = p1;   // 참조 복사 → 같은 객체를 가리킴
+
+        p2.Name = "Bob";  // p2에서 Bob으로 값 변경
+
+        Console.WriteLine(p1.Name); // Bob
+        Console.WriteLine(p2.Name); // Bob
+    }
+}
+```
+**배열 예제 코드**
+- 배열도 참조형이라서 같이 바뀐다.
+```csharp
+using System;
+
+class Program
+{
+    static void Main()
+    {
+        int[] arr1 = { 1, 2, 3 };
+        int[] arr2 = arr1;    // 참조 복사 → 같은 객체를 가리킴
+
+        arr2[0] = 999;
+
+        Console.WriteLine(arr1[0]); // 999
+        Console.WriteLine(arr2[0]); // 999
     }
 }
 ```
