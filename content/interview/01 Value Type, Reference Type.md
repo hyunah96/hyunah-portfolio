@@ -1,5 +1,5 @@
 ---
-title: 값 형식과 참조 형식
+title: Value Type, Reference Type
 tags:
   - csharp
   - interview
