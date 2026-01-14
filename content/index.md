@@ -21,7 +21,7 @@ title: hyunah
   <div class="col rightCol">
 
   <div class="profileCard">
-      <img class="profileImg" src="/img/profile.jpg" alt="김현아 프로필 사진" />
+      <img class="profileImg" src="./img/profile.jpg" alt="김현아 프로필 사진" />
     </div>
 
 <div class="profileInfo">
