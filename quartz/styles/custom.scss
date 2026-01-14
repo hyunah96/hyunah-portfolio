@@ -153,6 +153,38 @@
   justify-content: center;
 }
 
+/* 프로필 카드 */
+.profileCard {
+  display: flex;
+  justify-content: flex-start;
+  margin-top: 4px;
+}
+
+.profileImg {
+  width: 104px;
+  height: 104px;
+  object-fit: cover;
+  box-shadow: 0 6px 16px rgba(0,0,0,0.12);
+}
+
+/* 연락처 정보 사진 아래로 살짝 내림 */
+.profileInfo {
+  margin-top: 12px;
+  line-height: 1.6;
+}
+
+.profileName {
+  font-weight: 700;
+  font-size: 1.05rem;
+  margin-bottom: 6px;
+}
+
+.profileList {
+  padding-left: 18px;
+  margin: 0;
+}
+
+
 /* 모바일 */
 @media (max-width: 720px){
   .resumeSection{
