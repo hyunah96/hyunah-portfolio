@@ -5,13 +5,9 @@ tags:
   - interview
 date: 2026-01-13
 ---
-## `var`, `object`, `dynamic` + Boxing/Unboxing
+## `var`, `object`, `dynamic`
 
 >C#에서 변수에 값을 담을 때 자주 나오는 키워드가 `var`, `object`, `dynamic`이다. 각각 **타입이 결정되는 시점**과 **검사 방식**이 다르다.
->`var` → **컴파일 타임에 타입이 확정**되는 타입 추론
->`object` → 모든 타입을 담을 수 있는 **최상위 타입**
->`dynamic` → 타입 검사를 **런타임으로 미루는 방식**
->`object`/`dynamic`에 값형을 담았다 꺼낼 때는 **Boxing/Unboxing 비용**까지 같이 이해해야 한다.
 
 ### `var`
 - `var`는 **컴파일러가 오른쪽 값을 보고 타입을 결정**한다.
@@ -39,8 +35,9 @@ class Program
 ```
 ### `object
 - `object`는 C#의 **최상위 타입**이라 어떤 타입이든 담을 수 있다.
-- 하지만 `object`로 담으면 컴파일러는 **object**로만알기 때문에 꺼내서 사용할 때 **캐스팅이 필요**한 경우가 많다.
-- 특히 **값형(int, bool, struct)** 을 `object`에 담으면 **박싱(Boxing)** 이 발생할 수 있다.
+  **값형**(int/bool/struct .. ),**참조형**(class/string/array/List/Dictionary ..)
+- 하지만 `object`로 담으면 컴파일러는 `object`로만 알기 때문에 꺼내서 사용할 때 **캐스팅이 필요**한 경우가 많다.
+- 특히 **값형(`int`, `bool`, `struct`)** 을 `object`에 담으면 **박싱(`Boxing`)** 이 발생할 수 있다.
 ```csharp
 using System;
 
@@ -59,8 +56,9 @@ class Program
 }
 ```
 ### `dynamic`
-- `dynamic`은 **컴파일러가 타입 검사를 미루고**, 실행 중(런타임)에 결정한다.
+- `dynamic`은 **컴파일러가 타입 검사를 미루고, 실행 중(런타임)에 실제 들어있는 값의 타입을 보고 결정한다.**
 - 그래서 캐스팅 없이도 되는 것처럼 보이지만 잘못된 멤버 호출, 오타, 없는 메서드는 **런타임 에러**가 수 있다.
+- `dynamic`은 **어떤 타입이든 다시 담을 수 있게 허용한다.**
 ```csharp
 using System;
 
@@ -70,13 +68,63 @@ class Program
     {
         dynamic d = 10;
         Console.WriteLine(d + 1); // 11 (런타임에 int로 동작)
-
+		// 어떤 타입이든 다시 담을 수 있음
         d = "Hello";
         Console.WriteLine(d.Length); // 5 (런타임에 string으로 동작)
-
-        // Console.WriteLine(d.NotExist()); // 컴파일은 되지만 런타임에서 예외 발생 가능
     }
 }
 ```
-여기서부턴 내일 수정
-준비 잘하자
+
+#### `var` / `object` / `dynamic` 요약
+
+- `var`
+    - 타입 결정: **컴파일 타임**
+    - 캐스팅: 필요 없음(이미 타입이 확정)
+    - 특징: 가독성용 문법, **동적 아님**
+- `object`
+    - 타입 결정: 컴파일 타임에는 `object`, 실제 값은 런타임에 들어감
+    - 캐스팅: 보통 **필요**
+    - 특징: 값형 담으면 **박싱/언박싱** 연결
+- `dynamic`
+    - 타입 결정: **런타임**
+    - 캐스팅: 겉으로는 필요 없어 보임
+    - 특징: 컴파일러 검사가 약해져서 **런타임 에러 위험**
+## `Boxing`, `Unboxing`
+
+> **Boxing**: 값형을 `object`로 변환하면서 **힙에 새 객체를 만들고 값이 복사되는 과정**
+> **Unboxing**: 박싱된 `object` 안의 값을 **원래 값형으로 꺼내는 과정**
+
+```csharp
+using System;
+
+class Program
+{
+    static void Main()
+    {
+        int a = 123;
+
+        object box = a;     // 박싱: int → object
+        int b = (int)box;   // 언박싱: object → int
+
+        Console.WriteLine(b); // 123
+    }
+}
+```
+- 박싱은 힙 할당이 생길 수 있어 **GC 부담/성능 저하**가 발생할 수 있다.
+- 반복문에서 박싱이 계속 일어나면 성능 이슈가 커질 수 있다.
+#### `Boxing`하면 힙 할당이 생기는 이유
+- 값형(`Value Type`)의 변수가 저장되는 위치는 `stack`메모리에 위치하고, 
+  참조형(`Reference type`)의 객체는 `heap` 메모리에 위치한다.
+  (참조값은 지역 변수면 `stack`, 필드면 `heap` 위치)
+- `Boxing`이 발생할 때 `heap`에 공간을 할당해서(`box`) `stack`에 있는 값을 복사해 넣는다.
+- `stack` 메모리에서는 값이 저장되어있는 객체를 가리키는 `heap` 메모리의 주소를 저장하게 됩니다.
+
+#### `Unboxing`에서 캐스팅
+- `Unboxing`은 **박싱된 `object` 안에 들어있는 값형 값을 다시 꺼내는 과정**이다.  
+- 이때 `object`는 무슨 타입이 들어있는지를 컴파일 타임에 확정할 수 없기 때문에 **명시적으로 타입을 지정(캐스팅)** 해줘야 한다.
+```csharp
+object obj = 10;   // Boxing: int -> object
+
+int x = (int)obj;  // (int)가 캐스팅 문법 + 이 순간 Unboxing 발생
+Console.WriteLine(x); // 10
+```
