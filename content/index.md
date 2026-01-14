@@ -20,9 +20,17 @@ title: hyunah
 
   <div class="col rightCol">
 
-- **이름:** 김현아  
-- **연락처:** 010-2325-2820  
-- **이메일:** [gusdk6_@naver.com](mailto:gusdk6_@naver.com)
+  <div class="profileCard">
+      <img class="profileImg" src="/img/profile.jpg" alt="김현아 프로필 사진" />
+    </div>
+
+<div class="profileInfo">
+      <div class="profileName">김현아</div>
+      <ul class="profileList">
+        <li><b>연락처</b> : 010-2325-2820</li>
+        <li><b>이메일</b> : <a href="mailto:gusdk6_@naver.com">gusdk6_@naver.com</a></li>
+      </ul>
+    </div>
 
   </div>
   
