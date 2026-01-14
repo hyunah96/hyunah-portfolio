@@ -25,8 +25,8 @@ title: hyunah
     </div>
 
 <div class="profileInfo">
-      <div class="profileName">김현아</div>
       <ul class="profileList">
+      <li><b>이름</b> : 김현아</li>
         <li><b>연락처</b> : 010-2325-2820</li>
         <li><b>이메일</b> : <a href="mailto:gusdk6_@naver.com">gusdk6_@naver.com</a></li>
       </ul>
