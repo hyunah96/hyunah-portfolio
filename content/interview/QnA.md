@@ -43,24 +43,50 @@ date: 2026-01-14
 
 10. nullable(`int?`)와 null 처리 연산자(`?.`, `??`, `??=`)
 11. `const` vs `readonly` 차이
-12. 오버로딩(Overloading) vs 오버라이딩(Overriding) 차이
-13. `virtual / override / new` 차이
-14. 인터페이스 vs 추상 클래스 차이
+12. 다형성(Polymorphism) 개념(컴파일타임/런타임)
+    - 다형성은 **같은 메서드 호출이 타입에 따라 다르게 동작하는 것을**을 말합니다.
+      구현 방식으로는 **컴파일 타임 다형성(오버로딩)** 과 **런타임 다형성(오버라이딩,인터페이스)** 로 나뉩니다.
+13. `Overloading`, `Overriding` 차이
+    - 오버로딩은 **메서드 이름은 같지만**, **매개변수(개수/타입/순서)를 다르게 해서** 컴파일 타임에 어떤 메서드를 호출할지 결정하는 방식입니다.
+    - 오버라이딩은 **부모의 메서드를 자식이 재정의 하는 것입니다.** 부모 메서드와 시그니처가 같아야 하고 **런타임에 결정됩니다.**
+      
+14. `virtual / override / new` 차이
+15. 인터페이스, 추상 클래스 차이
 	- 인터페이스는 **기능을 반드시 구현해야 하는 규약**입니다. 클래스가 여러개의 인터페이스를 다중구현할 수 있습니다.
 	- 추상 클래스는 **공통 필드나 공통 로직같은 기본 구현을 제공하는** 클래스입니다. 일부는 추상 메서드로 남겨서 자식이 반드시 구현하게 할 수 있지만 단일 상속이라 하나만 상속 가능합니다. 따라서 다형성 중심이면 인터페이스를, 공통 코드 재사용이나 공통적인 기본 흐름이 필요하면 추상 클래스를 사용합니다.
 
-15. OOP 4대 특성(캡슐화/상속/다형성/추상화)
-16. 상속(Inheritance) vs 합성(Composition)
-17. 캡슐화(Encapsulation) 의미(단순 private 이상)
-18. 다형성(Polymorphism) 개념(컴파일타임/런타임)
-19. 결합도(Coupling) vs 응집도(Cohesion)
-20. SOLID 중 (SRP/OCP/DIP) 개념
+16. OOP 4대 특성(캡슐화/상속/다형성/추상화)
+    - **객체지향 4대 특성은 캡슐화, 상속, 다형성, 추상화입니다.**  
+      1. **캡슐화**는 객체의 내부 데이터를 `private`으로 숨기고, 메서드/프로퍼티로만 접근하게 해서 **무결성을 지키는 것**입니다.  
+      2. **상속**은 공통 기능을 부모 클래스에 두고, 자식 클래스가 이를 재사용하면서 필요한 기능을 **추가해서 확장**하는 방식입니다.  
+      3. **다형성**은 부모 타입으로 다루더라도 실제 객체 타입에 따라 `override`된 메서드가 다르게 동작하는 것입니다. 
+      4. **추상화**는 인터페이스/추상 클래스로 **무엇을 할 수 있는지**만 정의하고 상세 구현은 감춰서, 구현체를 바꿔도 사용하는 코드는 그대로인 **교체 가능한 구조**를 만듭니다.
+         
+17. 캡슐화에서 `private`로 숨기는 이유
+      -  **외부에서 직접 수정하지 못하게 막고**, 필요한 기능만 공개해서 **정해진 방식을 통해서만 접근하게 하기 위함입니다.**
+    
+18. SOLID 5대 원칙
+    - SRP 단일 책임 원칙 - 하나의 클래스는 하나의 기능만 담당하여 하나의 책임만 가져야 합니다.
+    - OCP 개방 폐쇄 원칙 - 새로운 기능이 추가되어도 기존 코드 수정은 최소화 하는 원칙입니다.
+    - LSP 리스코프 치환 원칙 - 서브 타입은 언제나 부모 타입으로 교체할 수 있어야 한다는 원칙입니다. (다향성)
+    - ISP 인터페이스 분리 원칙 - 인터페이스를 각각 사용에 맞게끔 잘게 분리해야 한다는 원칙입니다.
+    - DIP 의존 역전 원칙 - 어떤 `Class`를 참조해서 사용할 때 그 `Class`를 직접 참조하는 것이 아니라 **상위 요소로 참조**하라는 원칙입니다.
+
+19. 상속(Inheritance) vs 합성(Composition)
+
+
+20. 결합도(Coupling) vs 응집도(Cohesion)
+
 21. 의존성 주입(DI) 기본 개념(왜 필요한가)
 22. 예외(Exception) vs 입력 검증(if) 경계
 23. try-catch-finally 의미 + finally 목적
-24. `using` / `IDisposable` 개념(자원 해제)
-25. enum 사용처(상태값 관리) + 주의점
-26. GC가 해주는 것 vs 못해주는 것(자원 누수 오해)
+
+24. enum 사용처(상태값 관리) + 주의점
+25. GC가 해주는 것 vs 못해주는 것
+    - **GC가 해주는 것** : 더이상 참조되지 않는 메모리를 회수합니다.(`new`로 만든 객체의 메모리)
+    - **GC가 못해주는 것**: 파일 핸들, 소켓, DB 연결 같은 **비관리 자원**은 원하는 시점에 확실히 닫아주지 못합니다.
+
+26. `using` / `IDisposable` 개념(자원 해제)
 27. `event` vs `delegate` 차이 <<< 1.14 목표
 28. `IEnumerable` vs `IEnumerable<T>` / 지연 실행(LINQ)
 29. 컬렉션: `List<T>` vs `Dictionary<TKey,TValue>` 선택 기준
@@ -70,18 +96,14 @@ date: 2026-01-14
 ---
 
 ## B) WPF 기본 개념
-
-36. WPF에서 **XAML의 역할**(UI 선언)과 Code-behind의 역할
-37. WPF 바인딩(Data Binding)이란? (UI와 데이터 연결)
-38. DataContext란? (바인딩이 어디를 보고 있는지)
-39. 바인딩 모드(OneWay/TwoWay/OneTime) 차이
-40. `INotifyPropertyChanged`가 왜 필요한가(화면 갱신 원리)
-41. `ObservableCollection`이 왜 필요한가(ItemsControl 갱신)
-42. Dependency Property(의존 속성) 개념(왜 일반 프로퍼티와 다른가)
-43. Resource/Style 개념(재사용/일관성) + StaticResource vs DynamicResource
-44. ControlTemplate vs Style 차이(외형 커스터마이징 범위)
-45. Routed Event(버블링/터널링) 개념(왜 그런 구조인지)
-46. Command(CommandBinding) 개념(이벤트 대신 커맨드 쓰는 이유)
+- **XAML 역할 vs Code-behind 역할** (View는 UI, 로직은 최대한 VM)
+- **Data Binding** (UI ↔ 데이터 연결 개념)
+- **DataContext** (바인딩이 바라보는 대상)
+- **Binding Mode**: OneWay / TwoWay / OneTime (+ UpdateSourceTrigger는 언급 정도)
+- **INotifyPropertyChanged** (속성 값 바뀌면 UI 갱신되는 원리)
+- **ObservableCollection** (목록 변경 시 ItemsControl 자동 갱신)
+- **Command**: ICommand / CommandBinding 개념 (이벤트 대신 커맨드 쓰는 이유)
+- **UI Thread & Dispatcher 기본** ⭐️ (백그라운드 작업 결과를 UI에 반영하는 방식)
 ---
 
 ## C) MVVM 패턴 기본 개념
@@ -89,20 +111,23 @@ date: 2026-01-14
 47. MVVM이란? (View / ViewModel / Model 역할 분리)
 48. ViewModel에서 UI(Control)를 직접 참조하면 안 되는 이유
 49. Command(`ICommand`)는 무엇이고 왜 쓰나(버튼 클릭 처리 방식)
-50. Model과 DTO를 분리하는 이유(표현/전송/도메인 분리)
+50. Model과 DTO를 분리하는 이유(표현/전송/도메인 분리) 가볍게 
 51. Validation을 MVVM에서 처리하는 기본 방법(개념 수준)
-52. 화면 전환(Navigation)을 MVVM스럽게 하는 방식(서비스/라우팅 개념)
-53. ViewModel 간 통신 방식(Messenger/EventAggregator 같은 개념)
-54. MVVM이 테스트(단위 테스트)에 유리한 이유
+52. **Navigation(화면 전환) 기본 구조** (서비스로 CurrentViewModel 바꾸는 방식 “개념”
+53. **비동기(Async/Await)를 MVVM에서 쓰는 패턴** ⭐️
+54. IsBusy(로딩 표시), 버튼 비활성화, 예외 처리, 취소(CancellationToken)
+55. ViewModel 간 통신 방식(Messenger/EventAggregator 같은 개념) 가볍게 
+56. **Scenario 모델링(상태 관리) 기본** ⭐️
+57. Resource/Style + StaticResource vs DynamicResource
 ---
 
 ## D) 비동기(Async/Await) 기본 개념
-55. async/await란? (동기 코드처럼 쓰는 비동기 흐름)
-56. 비동기(Async) vs 멀티스레드(Thread) 차이
+55. async/await
+56. Async vs Thread 차이
 57. `Task`란 무엇이고, 왜 반환형으로 쓰나
 58. `async void`가 위험한 이유(예외/대기 불가)
 59. `CancellationToken` 개념(취소는 “협조”라는 점)
-60. WPF에서 UI 스레드와 await 이후 UI 업데이트가 가능한 이유(개념 수준)
+60. WPF에서 UI 스레드와 await 이후 UI 업데이트(Dispatcher 포함)
 61. Task.Run을 언제 쓰면 안 되는지 (I/O 비동기 vs CPU 작업)
 ---
 
