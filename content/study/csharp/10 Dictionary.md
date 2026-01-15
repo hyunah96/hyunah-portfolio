@@ -4,7 +4,7 @@ tags:
   - csharp
 date: 2025-11-15
 ---
-### Dictionary<TKey, TValue>란?
+### Dictionary<TKey, TValue>
 - Dictionary<TKey, TValue>는 **키(Key)와 값(Value)** 을 한 쌍으로 저장하는 자료구조이다.
 - 키로 값을 빠르게 찾는 전화번호부나, 사전 같은 느낌이다.
 - `List<T>`는 인덱스로 찾지만 `Dictionary`는 **키로 찾는다.**
@@ -51,6 +51,7 @@ dict.Add("B", 2);
 // dict.Add("A", 99); // ArgumentException (키 중복)
 ```
 #### `indexer`
+- `dict["A"]`처럼 **대괄호 `[]`로 접근하는 방식**을 **인덱서(indexer)** 라고 부른다.
 - 키가 없으면 **추가** 되고, 키가 있으면 **수정(덮어쓰기)** 된다.
 ```csharp
 var dict = new Dictionary<string, int>();
@@ -115,4 +116,27 @@ if (plcState.TryGetValue("M550", out bool isOn) && isOn)
 {
     Console.WriteLine("M550 ON");
 }
+```
+### 비슷한 자료구조
+### `HashSet<T>`
+- `HashSet<T>`는 **중복을 허용하지 않는 컬렉션(집합)** 이다.
+- `Dictionary`처럼 **해시 기반**이라 `Contains`로 **존재 여부를 빠르게 확인**할 때 좋다.
+- 차이:
+    - `Dictionary<TKey,TValue>` : **키 → 값**
+    - `HashSet<T>` : **값만 저장(중복 X)**
+#### `HashSet<T>` 생성
+```csharp
+using System;
+using System.Collections.Generic;
+
+var set = new HashSet<string> { "M500", "M550" };
+```
+#### `Add`, `Remove`, `Contains`
+```csharp
+set.Add("M560");           // 추가
+set.Add("M560");           // 중복 추가해도 1개만 유지됨 (false 반환)
+
+bool hasM550 = set.Contains("M550"); // true
+
+set.Remove("M500");        // 삭제
 ```
