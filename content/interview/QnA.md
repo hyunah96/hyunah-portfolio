@@ -182,7 +182,7 @@ date: 2026-01-14
 - **의존 프로퍼티(`DependencyProperty`) 설명**
   - WPF 컨트롤 내부에서 속성이 변경되는 것을 관리하는 시스템입니다.
     바인딩, 스타일, 애니메이션 같은 기능이 동작할 때 변경을 감지해 UI가 자동으로 갱신되게 해줍니다.
-
+~1.16~ ~1.16~ ~1.16~ ~1.16~ ~1.16~
 - WPF 기능의 기반(바인딩/스타일/애니메이션/리소스/기본값/값 상속 등)
 - 템플릿 종류(ControlTemplate / DataTemplate / ItemsPanelTemplate) & 사용처
 - 스타일/브러시/리소스, ResourceDictionary
@@ -206,7 +206,7 @@ date: 2026-01-14
 ## D) 비동기(Async/Await) 기본 개념
 55. ⭐️ async/await
 56. ⭐️`Task`란 무엇이고, 왜 반환형으로 쓰나
-57. ⭐️ Async vs Thread 차이
+57. ⭐️ Async vs Thread 차이 ~1.16~ ~1.16~ ~1.16~ ~1.16~ ~1.16~
 58. `async void`가 위험한 이유(예외/대기 불가)
 59. ⭐️ `CancellationToken` 개념(취소는 “협조”라는 점)
 60. WPF에서 UI 스레드와 await 이후 UI 업데이트(Dispatcher 포함)

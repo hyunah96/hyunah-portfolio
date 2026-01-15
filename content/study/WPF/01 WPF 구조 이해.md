@@ -70,7 +70,6 @@ date: 2025-11-18
 ![dock](../img/dockpanel_diagram_v2.png)
 #### `WrapPanel`
 - 컨트롤을 **왼쪽→오른쪽으로 배치**하다가 공간이 부족하면 **자동으로 다음 줄로 내려**간다.
-- 버튼이 한 줄에 다 들어가면 가로로 쭉 놓이고, 공간이 부족해지면 컨텐츠는 **아래 줄로 내려간다.**
 ```csharp
 <WrapPanel>
     <Button Content="EQ-01" Margin="4"/>
