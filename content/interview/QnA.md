@@ -163,23 +163,45 @@ date: 2026-01-14
 ---
 
 ## B) WPF 기본 개념
-- ⭐️ **XAML 역할 vs Code-behind 역할** (View는 UI, 로직은 최대한 VM)
-- ⭐️ **Data Binding, **DataContext**** (UI ↔ 데이터 연결 개념)
+1. **WPF와 WinForms 차이**
+   - **WPF** : XAML을 사용하여 UI를 구성합니다. 데이터 바인딩으로 UI와 로직을 분리해서 유지보수성이 좋습니다.
+   - **WinForms** : 컨트롤을 코드로 배치하고 이벤트 중심으로 처리하는 방식이라 빠르게 만들기 좋지만 화면과 기능이 커질수록 코드비하인드가 늘어서 복잡해지고 유지보수가 어려워질 수 있습니다.
+
+2. **XAML, Code-behind의 역할**
+   - **XAML** : 화면의 레이아웃, 스타일, 데이터 바인딩을 선언해서 View를 구성합니다.
+   - **Code-behind** : View의 생명주기나 UI에만 해당되는 처리만 하고 데이터 처리같은 비즈니스 로직은 ViewModel이 수행합니다.
+ 
+3. **Data Binding, DataContext** 
+   - **Data Binding** : XAML의 UI 속성과 ViewModel의 속성을 연결해서 데이터의 상태가 변경 될 때 마다 UI가 자동으로 업데이트 되는 기능입니다.
+   - 장점 : 값이 바뀔 때마다 **UI를 직접 업데이트하는 코드를 줄일 수 있어서** 유지보수가 쉬워집니다.
+   - **DataContext** : 바인딩이 값을 찾을 때 기준이 되는 **기본 데이터 소스** 입니다.
+
+4. `INotifyPropertyChanged`를 **해야 UI가 갱신되는 이유**
+   - 바인딩은 UI와 ViewModel 속성을 연결해서 값을 보여주지만, 값이 바뀌었다는 사실은 자동으로 알 수 없습니다. 그래서 **값이 변경됐다고 알려주는 표준**이 `INotifyPropertyChanged`이고, 속성이 바뀔 때 `PropertyChanged` 이벤트를 발생시키면 이를 감지해서 UI를 다시 갱신합니다.
+
+- **의존 프로퍼티(`DependencyProperty`) 설명**
+  - WPF 컨트롤 내부에서 속성이 변경되는 것을 관리하는 시스템입니다.
+    바인딩, 스타일, 애니메이션 같은 기능이 동작할 때 변경을 감지해 UI가 자동으로 갱신되게 해줍니다.
+
+- WPF 기능의 기반(바인딩/스타일/애니메이션/리소스/기본값/값 상속 등)
+- 템플릿 종류(ControlTemplate / DataTemplate / ItemsPanelTemplate) & 사용처
+- 스타일/브러시/리소스, ResourceDictionary
+  - MergedDictionaries, 테마 분리, DynamicResource 성능 차이까지는 ㄴㄴㄴ 
+
+- 레이아웃과 패널(Panel 역할 + 종류 예시)Grid/StackPanel/DockPanel/Canvas/WrapPanel 같은 기본 레이아웃 이해
 - **Binding Mode**: OneWay / TwoWay / OneTime (+ UpdateSourceTrigger는 언급 정도)
-- ⭐️**INotifyPropertyChanged** (속성 값 바뀌면 UI 갱신되는 원리)
-- ⭐️**ObservableCollection** (목록 변경 시 ItemsControl 자동 갱신)
-- ⭐️**ICommand**: ICommand / CommandBinding 개념 (이벤트 대신 커맨드 쓰는 이유)
-- ⭐️**UI Thread & Dispatcher 기본** (백그라운드 작업 결과를 UI에 반영하는 방식)
+
+- **ObservableCollection** (`List<T>`와 뭐가 달라서 ItemsControl이 자동 갱신되는지)
+-  Command(명령)란? 코드 분리에 어떻게 도움? 클릭 이벤트를 코드비하인드에서 처리 vs ICommand로 ViewModel로 넘김(분리/테스트/재사용)
+- **Dispatcher & UI Thread** 
+  - 신입 수준 답변 (UI는 UI 스레드에서만 접근 가능 → 백그라운드 결과는 Dispatcher로 UI 스레드에 보내 갱신)
 ---
 ## C) MVVM 패턴 기본 개념
-17. ⭐️ **Scenario 모델링 상태(State) 설계 개념**
-18. ⭐️ MVVM이란? (View / ViewModel / Model 역할 분리) <<<< 1.15 목표
-19. ViewModel에서 UI(Control)를 직접 참조하면 안 되는 이유
-20. Command(`ICommand`)는 무엇이고 왜 쓰나(버튼 클릭 처리 방식)
-21. Model과 DTO를 분리하는 이유(표현/전송/도메인 분리) 가볍게 
-22. Validation을 MVVM에서 처리하는 기본 방법(개념 수준)
-23. **Navigation(화면 전환) 기본 구조** (서비스로 CurrentViewModel 바꾸는 방식 “개념”
-24. IsBusy(로딩 표시), 버튼 비활성화, 예외 처리, 취소(CancellationToken)
+17. **Scenario 모델링이란 무엇인가?
+    - 사용자/설비 동작 흐름을 상태(State)와 이벤트(Event)로 나눠서, 화면과 로직을 예측 가능하게 설계하는 것”
+18. MVVM 패턴 설명
+19. MVC패턴 설명 
+20. MVC 패턴과 MVVM 패턴의 차이점
 ---
 ## D) 비동기(Async/Await) 기본 개념
 55. ⭐️ async/await
