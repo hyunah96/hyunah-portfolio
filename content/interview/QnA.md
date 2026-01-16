@@ -181,15 +181,25 @@ date: 2026-01-14
    - 장점 : 값이 바뀔 때마다 **UI를 직접 업데이트하는 코드를 줄일 수 있어서** 유지보수가 쉬워집니다.
    - **DataContext** : 바인딩이 값을 찾을 때 기준이 되는 **기본 데이터 소스** 입니다.
 
-4. `INotifyPropertyChanged`를 **해야 UI가 갱신되는 이유**
-   - 바인딩은 UI와 ViewModel 속성을 연결해서 값을 보여주지만, 값이 바뀌었다는 사실은 자동으로 알 수 없습니다. 그래서 **값이 변경됐다고 알려주는 표준**이 `INotifyPropertyChanged`이고, 속성이 바뀔 때 `PropertyChanged` 이벤트를 발생시키면 이를 감지해서 UI를 다시 갱신합니다.
+
+3. `Binding Mode` 설명
+   - `Binding Mode`는 **데이터가 어느 방향으로 흐를지**를 정하는 옵션입니다.
+   - `OneWay`: 한방향으로 `ViewModel` 값이 바뀌면 `UI`는 갱신되지만, `UI`에서 값을 바꿔도 `ViewModel`에는 반영되지 않습니다.
+   - `TwoWay`: 양방향으로 `ViewModel`에서도, `UI`에서도 값이 바뀌면 서로 갱신됩니다.
+   - `OneTime`: 처음 한번만  `ViewModel`값을 `UI`로 가져옵니다.
+- `TextBox`는 어떤 것을 사용하나요?
+ - `TextBox`는 사용자 입력을 `ViewModel`에 반영해야 해서 보통 `TwoWay`로 씁니다.
+ - 입력 값은 언제 `ViewModel`로 들어가나요?
+   - 포커스가 빠질 때 반영됩니다. 타이핑 즉시 반영이 필요하면 `UpdateSourceTrigger`를 사용합니다.
+
+
+2. `INotifyPropertyChanged`를 **해야 UI가 갱신되는 이유**
+   - 바인딩은 `UI`와 `ViewModel` 속성을 연결해서 값을 보여주지만, 값이 바뀌었다는 사실은 자동으로 알 수 없습니다. 그래서 **값이 변경됐다고 알려주는 표준**이 `INotifyPropertyChanged`이고, 속성이 바뀔 때 `PropertyChanged` 이벤트를 발생시키면 이를 감지해서 UI를 다시 갱신합니다.
     추가 질문 `INotifyPropertyChanged` + `ObservableCollection` 차이는?
 
-- **의존 프로퍼티(`DependencyProperty`) 설명**
+- **의존 프로퍼티(`DependencyProperty`) 설명** ?? 모르겠음
   - WPF 컨트롤 내부에서 속성이 변경되는 것을 관리하는 시스템입니다.
-    바인딩, 스타일, 애니메이션 같은 기능이 동작할 때 변경을 감지해 UI가 자동으로 갱신되게 해줍니다.
-~ 여기서부터 ~
-
+    바인딩, 스타일, 애니메이션 같은 기능이 동작할 때 변경을 감지해 UI가 자동으로 변경되게 해줍니다.
 
 1. **레이아웃과 패널(Panel 역할 + 종류)**
     - 레이아웃 종류로는 `Grid`, `Canvas`, `StackPanel`, `DockPanel`, `WrapPanel`이 있습니다.
@@ -206,27 +216,50 @@ date: 2026-01-14
       리소스가 많아지면 `ResourceDictionary` 파일로 분리해서 관리합니다.
       - **왜?** 유지보수가 쉽고, 구조가 깔끔해져서
 
-3. **Binding Mode + UpdateSourceTrigger(언급 정도)**
-- OneWay / TwoWay / OneTime
-- TextBox는 보통 TwoWay + (필요 시) UpdateSourceTrigger  
-    → 실무/면접에서 바로 나오는 단골
 
-3. **ObservableCollection (`List<T>`와 차이)**
-   - ItemsControl 자동 갱신이 왜 되는지  
-    → “목록 UI” 만들 때 거의 필수
-3. **Command(ICommand)**
-   - 클릭 이벤트를 code-behind에서 처리 vs ICommand로 VM에 위임  
-    → MVVM 분리/테스트/재사용 포인트라 면접에서 자주 물음.
+3. WPF에서 목록 UI에 데이터 붙일 때 뭘 쓰나요?
+   - 목록 `ItemsControl`: `ListBox(목록)`, `ListView(표)`, `DataGrid(표)`, `ComboBox(드롭다운)`**데이터를 붙일 때는 보통 `ItemsSource`로 컬렉션을 바인딩해서 보여줍니다. 만약 UI가 자동으로 갱신되어야 한다면 `ObservableCollection<T>`를 사용해야 합니다.**
+
+1. `List<T>`, `ObservableCollection<T>`차이
+   - `List<T>`: 데이터는 바뀌지만 변경 알림이 없어서 UI가 자동 갱신되지 않을 수 있습니다.
+   - `ObservableCollection<T>`: 데이터가 변경되면 UI가 자동으로 갱신됩니다.
+
+1. **Command(ICommand)**
+   - `Command`는 View의 사용자 입력을 ViewModel의 동작으로 연결해주는 통로입니다. View는 `Command`를 바인딩해서 실행 요청만 하고 실제 처리 로직은 ViewModel에 두어 UI와 비즈니스 로직을 분리합니다.
+   - **ICommand를 쓰는 이유가 무엇인가요?**
+     - `ICommand`를 쓰면 이벤트 핸들러 대신 `Execute`,`CanExecute`** 로 동작을 캡슐화할 수 있습니다.  그래서 **재사용**하기에도 좋습니다.
+	- **Command, code-behind 차이**
+	  - **code-behind**는 View 코드에 로직이 들어가서 UI와 로직이 쉽게 결합되고, 화면이 커질수록 유지보수가 어려워집니다.
+	    **Command** 는 View가 실행 요청만 하고 로직은 ViewModel에 있어서 **MVVM 분리**, **재사용**에 좋습니다.
 
 
-4. 템플릿 종류(ControlTemplate / DataTemplate / ItemsPanelTemplate) & 사용처
-   - **DataTemplate**(데이터를 어떻게 보이게?)
-   - **ItemsPanelTemplate**(아이템을 어떻게 배치?)
-   - **ControlTemplate**(컨트롤 모양 자체를 바꿈)  
-    → 바인딩/리소스/스타일이 이해돼야 템플릿이 쉬움.
-3. **WPF 기능의 기반(값 상속/기본값/리소스/스타일 기반 개념)**
-   - 값 상속(예: FontFamily 같은 것), 기본값, 리소스 해석 흐름  
-    → 위 내용을 “왜 그렇게 동작하는지” 정리하는 단계.
+1. **템플릿 종류(`ControlTemplate`, `DataTemplate`, `ItemsPanelTemplate`)**
+   - **`DataTemplate`**: 데이터 1개를 화면에 어떻게 그릴지 정의합니다.
+   - **`ItemsPanelTemplate`**: 데이터들을 담는 배치 패널(레이아웃 방식)을 정의합니다.
+   - **`ControlTemplate`**: 버튼, 체크박스 같은 컨트롤의 구조나 모양을 재정의합니다.
+
+1. “부모 `Grid`에 `FontSize=16` 을 줬더니 안쪽 `TextBlock`도 커지던데 왜인가?
+   - WPF의 일부 속성은 **값 상속** 이 적용돼서 부모에 설정한 값이 자식 요소로 전파됩니다.  만약 자식이 `FontSize`를 따로 지정하면 그 값이 **우선** 적용됩니다.
+
+
+
+
+---
+
+Q2. “`{StaticResource}`로 스타일을 찾을 때 어디서부터 찾나요?”
+
+**A.** `StaticResource`는 리소스를 찾을 때 **현재 요소의 Resources → 부모(상위) 요소 → Window(Resources) → App(Resources)** 순서로 올라가며 검색합니다.  
+그리고 이름 그대로 **로드/파싱 시점에 한 번** 찾아서 고정되기 때문에, 런타임에 리소스가 바뀌어도 자동 반영되지는 않습니다. (자동 반영이 필요하면 `DynamicResource`를 씁니다.)
+
+---
+
+Q3. “Window.Resources와 App.xaml에 같은 키 스타일이 있으면 뭐가 적용되죠?”
+
+**A.** 더 “가까운 범위”의 리소스가 우선이라서, **Window.Resources가 App.xaml보다 우선 적용**됩니다.  
+즉 같은 `x:Key`가 둘 다 있으면 Window에 있는 리소스가 선택됩니다.  
+이 규칙 덕분에 App에서 전역 스타일을 두고, 특정 Window에서는 같은 키로 **부분 오버라이드**하는 방식이 가능합니다.
+
+
 
 
 9. **Dispatcher & UI Thread**
@@ -234,7 +267,6 @@ date: 2026-01-14
 - 백그라운드 결과는 Dispatcher로 UI 업데이트  
     → 비동기/통신 붙일 때 반드시 필요(현업에서도 중요)
     - async/await + UI 갱신 꼬리 질문 가능
-
 
 
 ---
@@ -246,32 +278,60 @@ date: 2026-01-14
 20. MVC 패턴과 MVVM 패턴의 차이점
 ---
 ## D) 비동기(Async/Await) 기본 개념
-55. ⭐️ async/await
+55. ⭐️ async/await 개념
 56. ⭐️`Task`란 무엇이고, 왜 반환형으로 쓰나
 57. ⭐️ Async vs Thread 차이 ~1.16~ ~1.16~ ~1.16~ ~1.16~ ~1.16~
-58. `async void`가 위험한 이유(예외/대기 불가)
-59. ⭐️ `CancellationToken` 개념(취소는 “협조”라는 점)
-60. WPF에서 UI 스레드와 await 이후 UI 업데이트(Dispatcher 포함)
-61. Task.Run을 언제 쓰면 안 되는지 (I/O 비동기 vs CPU 작업)
+58. WPF에서 UI 스레드와 await 이후 UI 업데이트(Dispatcher 포함)
 ---
 
 ## E) 멀티스레드 기본 개념
-62. Race Condition(경쟁 상태)이란? (왜 가끔만 터지나)
-63. 스레드 안전(Thread-safe) 기본 개념 (공유 데이터/불변 객체/컬렉션)
-64. `lock`이란? (왜 필요하고 주의점은?)
-65. Deadlock(교착상태)이란? 대표 원인(락 순서/중첩 락)
-66. UI 스레드/백그라운드 스레드 분리 이유 + Dispatcher 개념(개념 수준)
+63. `lock`이란? (왜 필요하고 주의점은?)
+64. Race Condition(경쟁 상태)이란? (왜 가끔만 터지나) 시간 남으면 
+65. Deadlock(교착상태)이란? 대표 원인(락 순서/중첩 락) 시간 남으면  
 ---
 ## F) DB/SQL 기본 + 쿼리 단골 개념
 
-67. SELECT 기본 구조(SELECT/FROM/WHERE/ORDER BY) 의미 !!!1.16!! 걍 각자 역할과 순서정도
-68. 정규화(정규형) 아주 기본 개념 또는 PK/FK 관계 (JOIN 이해와 직결)
-69. JOIN 개념 + INNER JOIN vs LEFT JOIN 차이
-70. WHERE vs HAVING 차이(그룹 집계)
-71. GROUP BY가 필요한 상황(집계)
-72. DISTINCT는 언제 쓰고 주의점은?
-73. 인덱스(Index)란? 어떤 쿼리에 효과적인가
-74. 트랜잭션(Transaction)과 ACID 개념(왜 필요한가)
+
+68. 실행 순서 `FROM → WHERE → GROUP BY → HAVING → SELECT → ORDER BY`
+69. **WHERE vs HAVING 차이**
+    
+    - “행(row) 필터 vs 그룹(집계 결과) 필터”를 말할 수 있어야 함
+        
+70. **JOIN 기본 개념 + INNER vs LEFT JOIN 차이**
+    
+    - 결과에 “매칭 안 되는 행이 남는지”가 핵심
+        
+71. **GROUP BY가 필요한 상황 + 집계 함수(COUNT/SUM/AVG)**
+    
+    - “왜 GROUP BY 없으면 에러/의미가 깨지는지”
+        
+72. **PK(기본키) / FK(외래키) 개념 + 왜 필요한지**
+    
+    - 무결성(중복/참조) 관점
+        
+73. **정규화(Normalization) “한 줄” 설명 + 왜 하는지**
+    
+    - 중복 줄이고 이상현상(삽입/수정/삭제) 방지
+        
+74. **인덱스(Index)란? 어떤 쿼리에 효과적인가**
+    
+    - WHERE/JOIN/ORDER BY에서 자주, 대신 쓰기 성능·저장공간 비용
+        
+75. **트랜잭션(Transaction)과 ACID 개념(왜 필요한지)**
+    
+    - “중간 실패해도 데이터 일관성”을 지키는 장치
+        
+76. **DISTINCT vs GROUP BY 차이 + DISTINCT 주의점**
+    
+    - 중복 제거 목적, 비용/의도(정말 필요한지)
+        
+77. **NULL의 의미 + NULL 비교 시 주의점(IS NULL, 3-valued logic)**
+    
+    - `= NULL` 안 됨, 조건에서 결과가 달라짐
+        
+78. **서브쿼리 vs JOIN 언제 쓰나 (EXISTS/IN 포함)**
+    
+
 ---
 ## G) 디자인 패턴 기본 개념
 
