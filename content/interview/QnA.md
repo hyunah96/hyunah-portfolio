@@ -35,14 +35,14 @@ date: 2026-01-14
 5. ⭐️ `TryParse`, `TryGetValue` Try 패턴 의미
    - `TryParse`, `TryGetValue`는 실패가 자주 날 수 있는 상황에서 `bool`로 `true`/`false`를 반환해서 **예외를 방지합니다. 그리고 성공했을 때의 결과 값을 `out` 매개변수로 전달합니다.**
   
-4. ⭐️ `string` immutable(불변) 개념과 성능 포인트
+6. ⭐️ `string` immutable(불변) 개념과 성능 포인트
 
-5. ⭐️ `static`의 의미
+7. ⭐️ `static`의 의미
    - `static`은 객체를 만들지 않아도 클래스 이름으로 바로 접근할 수 있습니다. 프로그램 전체에서 1개만 공유되는 값을 갖고있습니다.
    -  단점은? `static` 멤버는 모든 인스턴스가 같은 값을 보기때문에 공유 상태가 생겨서 유지보수에 어려움이 생길 수 있습니다.
 
 
-1. `Boxing`, `Unboxing`차이
+8. `Boxing`, `Unboxing`차이
    - `Boxing`은 값 형식을 `object`로 변환하면서 **힙에 새 객체를 만들고 값이 복사되는 과정**을 말합니다.
      참조 형식으로 변환하는 과정에서 `heap` 메모리에 공간을 할당해서 `stack`에 있는 참조값을 복사해 새로운 객체에게 넣기때문에 GC 부담이 발생할 수 있습니다.
    - `Unboxing`은 박싱된 `object` 안의 값을 **원래 값형으로 꺼내는 과정**을 말합니다. 
@@ -170,7 +170,7 @@ date: 2026-01-14
     - `internal` : 같은 프로젝트 안에서만 접근 가능합니다.
 ---
 
-## B) WPF 기본 개념
+## B) `WPF`
 1. **WPF와 WinForms 차이**
    - **WPF** : XAML을 사용하여 UI를 구성합니다. 데이터 바인딩으로 UI와 로직을 분리해서 유지보수성이 좋습니다.
    - **WinForms** : 컨트롤을 코드로 배치하고 이벤트 중심으로 처리하는 방식이라 빠르게 만들기 좋지만 화면과 기능이 커질수록 코드비하인드가 늘어서 복잡해지고 유지보수가 어려워질 수 있습니다.
@@ -258,7 +258,7 @@ date: 2026-01-14
 
 
 ---
-## C) MVVM 패턴 기본 개념
+## C) 디자인 패턴(MVC,MVVM)
 76. **디자인 패턴이란?**
 77. **Scenario 모델링이란 무엇인가?
     - 사용자/설비 동작 흐름을 상태(State)와 이벤트(Event)로 나눠서, 화면과 로직을 예측 가능하게 설계하는 것”
@@ -266,21 +266,19 @@ date: 2026-01-14
 79. MVC패턴 설명 
 80. MVC 패턴과 MVVM 패턴의 차이점
 ---
-## D) 비동기(Async/Await) 기본 개념
+## D) 비동기(Async/Await)
 55. ⭐️ async/await 개념
 56. ⭐️`Task`란 무엇이고, 왜 반환형으로 쓰나
 57. ⭐️ Async vs Thread 차이 
 58. WPF에서 UI 스레드와 await 이후 UI 업데이트(Dispatcher 포함)
 ---
-
-## E) 멀티스레드 기본 개념
+## E) 멀티스레드
 63. `lock`이란? (왜 필요하고 주의점은?)
 64. Race Condition(경쟁 상태)이란? (왜 가끔만 터지나) 시간 남으면 
 65. Deadlock(교착상태)이란? 대표 원인(락 순서/중첩 락) 시간 남으면  
 1.17까지 마무리하기
 ---
-## F) DB/SQL 기본 + 쿼리 단골 개념
-
+## F) DB/SQL 기본
 
 68. 실행 순서 `FROM → WHERE → GROUP BY → HAVING → SELECT → ORDER BY`
 69. **WHERE vs HAVING 차이**
@@ -307,20 +305,15 @@ date: 2026-01-14
     
     - WHERE/JOIN/ORDER BY에서 자주, 대신 쓰기 성능·저장공간 비용
         
-75. **트랜잭션(Transaction)과 ACID 개념(왜 필요한지)**
-    
-    - “중간 실패해도 데이터 일관성”을 지키는 장치
+75. **트랜잭션(Transaction)
         
-76. **DISTINCT vs GROUP BY 차이 + DISTINCT 주의점**
-    
-    - 중복 제거 목적, 비용/의도(정말 필요한지)
-        
-77. **NULL의 의미 + NULL 비교 시 주의점(IS NULL, 3-valued logic)**
+76. **NULL의 의미 + NULL 비교 시 주의점(IS NULL, 3-valued logic)**
     
     - `= NULL` 안 됨, 조건에서 결과가 달라짐
         
-78. **서브쿼리 vs JOIN 언제 쓰나 (EXISTS/IN 포함)**
-    
+77. **서브쿼리 vs JOIN 언제 쓰나 (EXISTS/IN 포함)**
+
+
 18,19
 문자열,파싱,배열,리스트,딕셔너리,큐스택,정렬까지 다른건 걍 포기 
 sql 예제 3개
