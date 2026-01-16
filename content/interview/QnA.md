@@ -11,33 +11,33 @@ tags:
   - db
 date: 2026-01-14
 ---
-## A) C# 기본 개념
-
+## A) `C#`
 1. ⭐️ `Value Type`, `Reference Type` 차이
    - 값 형식`(Value Type)`은 변수가 실제 데이터 값을 저장하는 형식입니다. 그래서 다른 변수에 대입하면 값이 복사됩니다. 복사된 값은 서로 독립적이라 한쪽을 바꿔도 다른쪽은 바뀌지 않습니다. 자료형은 `int`,`double`,`struct`,`enum`이 있습니다.
    - 참조 형식`(Reference Type)`은 변수가 데이터가 있는 곳을 가리키는 참조값을 저장하는 형식입니다. 다른 변수에 대입하면 참조값이 복사되고 두 변수는 같은 객체를 기리킵니다.
      다른 곳에서 변수값을 변경하면 원본의 변수값도 변경됩니다.
      자료형은 `class`,`string`,`array`,`List`,`Dictionary`가 있습니다.
 
-1. ⭐️ `Call by value`, `Call by reference`(=`ref / out / in`)
+2. ⭐️ `Call by value`, `Call by reference`(=`ref / out / in`) 차이
    - `Call by value`는 값을 복사해서 전달하는 기본 방식이고 `Call By Reference`는 변수의 주소를 참조로 전달하는 방식입니다. `ref / out / in`를 사용해서 변수의 주소를 참조로 전달합니다.
    - `ref` : **변수 자체를 참조**합니다. **호출하는 쪽도 받는 쪽도 `ref`여야 합니다.**
    - `out` : **호출자 변수를 참조로 전달**해서 **결과를 `out`으로 전달합니다.** 
    - `in` : **변수 자체를 참조하지만 읽기 전용이라 수정할 수 없습니다.**
 
-1.  ⭐️ `struct`, `class` 차이
+3.  ⭐️ `struct`, `class` 차이
    - `struct`: **값 형식**이라 값이 복사돼서 서로 독립적이고 `null`이 안 되고 상속도 안 됩니다.
    - `class`: **참조 형식**이라 참조값이 복사되어 같은 객체를 공유하고 `null`이 가능하며 상속/다형성이 가능합니다. 
 
-1. `Stack`, `Heap` 개념
+4. `Stack`, `Heap` 개념
    - `Stack`: 메서드 호출 동안만 쓰는 **지역변수/매개변수/참조형 변수의 참조값**이 쌓이는 곳으로 메서드가 반환되면 즉시 정리가 됩니다.
    - `Heap`: `new`로 만든 **객체의 실체(데이터)** 가 놓이는 곳으로 참조가 끊어지면 GC가 관리합니다.
  
-1. ⭐️ `TryParse`, `TryGetValue` Try 패턴 의미
+5. ⭐️ `TryParse`, `TryGetValue` Try 패턴 의미
    - `TryParse`, `TryGetValue`는 실패가 자주 날 수 있는 상황에서 `bool`로 `true`/`false`를 반환해서 **예외를 방지합니다. 그리고 성공했을 때의 결과 값을 `out` 매개변수로 전달합니다.**
   
-1. ⭐️ `string` immutable(불변) 개념과 성능 포인트
-2. ⭐️ `static`의 의미
+4. ⭐️ `string` immutable(불변) 개념과 성능 포인트
+
+5. ⭐️ `static`의 의미
    - `static`은 객체를 만들지 않아도 클래스 이름으로 바로 접근할 수 있습니다. 프로그램 전체에서 1개만 공유되는 값을 갖고있습니다.
    -  단점은? `static` 멤버는 모든 인스턴스가 같은 값을 보기때문에 공유 상태가 생겨서 유지보수에 어려움이 생길 수 있습니다.
 
@@ -114,7 +114,10 @@ date: 2026-01-14
 11. 의존성 주입(DI) 기본 개념
     - 의존성 주입(DI)은 클래스가 필요한 객체를 내부에서 **`new`로 직접 만들지 않고, 밖에서 주입받는 방식**입니다.
 
-12. ⭐️ 예외(Exception) vs 입력 검증(if) 경계
+12. ⭐️ 언제 if로 미리 막고, 언제는 try/catch로 처리하는가?
+	- 입력값처럼 예상 가능한 오류는 `if`, `TryParse`로 검증합니다.
+    - DB나 네트워크 같은 외부 자원은 실패 예측이 어렵기 때문에 `try/catch`로 예외 처리합니다.
+
 13. ⭐️try-catch-finally 의미 + finally 목적
 
 
@@ -215,7 +218,12 @@ date: 2026-01-14
       `Brush`, `Thickness`, `Style`을 리소스로 등록해서 색상, 여백,두께, 스타일 속성 묶음을 여러 컨트롤에서 공통으로 재사용합니다.
       리소스가 많아지면 `ResourceDictionary` 파일로 분리해서 관리합니다.
       - **왜?** 유지보수가 쉽고, 구조가 깔끔해져서
-
+3. 정적 리소스(`StaticResource`), 동적 리소스(`DynamicResource`)의 차이
+   - **`StaticResource`: XAML이 로드될 때 한 번만** 리소스를 찾아서 값이 **고정**됩니다. 
+   - **`DynamicResource`:** 실행 중에 리소스가 바뀌면 **다시 참조해서 UI에 반영**할 수 있습니다.
+1. `StaticResource`로 스타일을 찾을 때 어디서부터 찾는가?
+   - 현재 요소의 `Resources` → 부모 → `Window.Resources` → `App.Resources`
+     https://daminkoon.tistory.com/4 이거보면서 다시 이해하기
 
 3. WPF에서 목록 UI에 데이터 붙일 때 뭘 쓰나요?
    - 목록 `ItemsControl`: `ListBox(목록)`, `ListView(표)`, `DataGrid(표)`, `ComboBox(드롭다운)`**데이터를 붙일 때는 보통 `ItemsSource`로 컬렉션을 바인딩해서 보여줍니다. 만약 UI가 자동으로 갱신되어야 한다면 `ObservableCollection<T>`를 사용해야 합니다.**
@@ -241,28 +249,8 @@ date: 2026-01-14
 1. “부모 `Grid`에 `FontSize=16` 을 줬더니 안쪽 `TextBlock`도 커지던데 왜인가?
    - WPF의 일부 속성은 **값 상속** 이 적용돼서 부모에 설정한 값이 자식 요소로 전파됩니다.  만약 자식이 `FontSize`를 따로 지정하면 그 값이 **우선** 적용됩니다.
 
-
-
-
----
-
-Q2. “`{StaticResource}`로 스타일을 찾을 때 어디서부터 찾나요?”
-
-**A.** `StaticResource`는 리소스를 찾을 때 **현재 요소의 Resources → 부모(상위) 요소 → Window(Resources) → App(Resources)** 순서로 올라가며 검색합니다.  
-그리고 이름 그대로 **로드/파싱 시점에 한 번** 찾아서 고정되기 때문에, 런타임에 리소스가 바뀌어도 자동 반영되지는 않습니다. (자동 반영이 필요하면 `DynamicResource`를 씁니다.)
-
----
-
-Q3. “Window.Resources와 App.xaml에 같은 키 스타일이 있으면 뭐가 적용되죠?”
-
-**A.** 더 “가까운 범위”의 리소스가 우선이라서, **Window.Resources가 App.xaml보다 우선 적용**됩니다.  
-즉 같은 `x:Key`가 둘 다 있으면 Window에 있는 리소스가 선택됩니다.  
-이 규칙 덕분에 App에서 전역 스타일을 두고, 특정 Window에서는 같은 키로 **부분 오버라이드**하는 방식이 가능합니다.
-
-
-
-
-9. **Dispatcher & UI Thread**
+1.17까지 마무리하기
+1. **Dispatcher & UI Thread**
 - UI는 UI 스레드만 접근 가능
 - 백그라운드 결과는 Dispatcher로 UI 업데이트  
     → 비동기/통신 붙일 때 반드시 필요(현업에서도 중요)
@@ -271,16 +259,17 @@ Q3. “Window.Resources와 App.xaml에 같은 키 스타일이 있으면 뭐가 
 
 ---
 ## C) MVVM 패턴 기본 개념
-17. **Scenario 모델링이란 무엇인가?
+76. **디자인 패턴이란?**
+77. **Scenario 모델링이란 무엇인가?
     - 사용자/설비 동작 흐름을 상태(State)와 이벤트(Event)로 나눠서, 화면과 로직을 예측 가능하게 설계하는 것”
-18. MVVM 패턴 설명
-19. MVC패턴 설명 
-20. MVC 패턴과 MVVM 패턴의 차이점
+78. MVVM 패턴 설명
+79. MVC패턴 설명 
+80. MVC 패턴과 MVVM 패턴의 차이점
 ---
 ## D) 비동기(Async/Await) 기본 개념
 55. ⭐️ async/await 개념
 56. ⭐️`Task`란 무엇이고, 왜 반환형으로 쓰나
-57. ⭐️ Async vs Thread 차이 ~1.16~ ~1.16~ ~1.16~ ~1.16~ ~1.16~
+57. ⭐️ Async vs Thread 차이 
 58. WPF에서 UI 스레드와 await 이후 UI 업데이트(Dispatcher 포함)
 ---
 
@@ -288,6 +277,7 @@ Q3. “Window.Resources와 App.xaml에 같은 키 스타일이 있으면 뭐가 
 63. `lock`이란? (왜 필요하고 주의점은?)
 64. Race Condition(경쟁 상태)이란? (왜 가끔만 터지나) 시간 남으면 
 65. Deadlock(교착상태)이란? 대표 원인(락 순서/중첩 락) 시간 남으면  
+1.17까지 마무리하기
 ---
 ## F) DB/SQL 기본 + 쿼리 단골 개념
 
@@ -331,11 +321,12 @@ Q3. “Window.Resources와 App.xaml에 같은 키 스타일이 있으면 뭐가 
         
 78. **서브쿼리 vs JOIN 언제 쓰나 (EXISTS/IN 포함)**
     
-
----
-## G) 디자인 패턴 기본 개념
-
-76. **디자인 패턴이란?**
-77. **Singleton** (개념 + 남용 문제)
-78. **Observer** (event와 연결)
-79. **Command** (WPF ICommand와 연결)
+18,19
+문자열,파싱,배열,리스트,딕셔너리,큐스택,정렬까지 다른건 걍 포기 
+sql 예제 3개
+자기소개, 지원동기, 회사이해, mes ,eap,웨이퍼
+자주 나온 질문 어떤 일 하고싶어?, 개발자로서 이루고 싶은건?, 10년 후 모습 , 갈등이 생겼을때 말로 통하지 않는 상대를 만난다면?, 요즘 관심있는 시사, 고민거리있나?
+교통, 인적성검사 극단값 x
+경력에 대한 예상 질문 gpt돌리기
+프로젝트 설명 
+마지막으로 하고싶은말

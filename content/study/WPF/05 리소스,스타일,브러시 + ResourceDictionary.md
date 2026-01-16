@@ -16,6 +16,20 @@ date: 2025-12-15
 
 <TextBlock Margin="{StaticResource CommonMargin}" Text="Hello"/>
 ```
+
+#### `StaticResource`, `DynamicResource`
+- WPF에서 `x:Key`로 등록한 리소스를 가져오는 방법은 크게 2가지가 있다.
+#### `StaticResource`
+- XAML이 로드될 때 **한 번만 찾아서 고정**한다.
+- **빠르고 일반적으로 권장되는 기본값**
+```csharp
+<TextBlock Margin="{StaticResource CommonMargin}" Text="Hello"/>
+```
+#### `DynamicResource`
+- 런타임에 `Resources["Key"]`가 바뀌면 **UI가 따라 바뀔 수 있다**.
+```csharp
+<TextBlock Margin="{DynamicResource CommonMargin}" Text="Hello"/>
+```
 #### `Brush`
 - `Background` / `Foreground`에 쓰는 **색 객체**이다.
 ```csharp
