@@ -105,7 +105,12 @@ date: 2026-01-14
 9. 결합도가 무엇인가?
     - **결합도는 서로에게 얼마나 의존하고 엮여있는 정도입니다.**  결합도가 높으면 한쪽 변경이 다른 쪽에 영향을 줘서 유지보수가 어려워집니다. 그래서 **결합도는 낮게** 설계하는것이 좋습니다.
 
-10. `DateTime`/`TimeSpan` 기본
+10. `DateTime`/`TimeSpan` 차이
+    - `DateTime` : **타임스탬프**, 특정 날짜나 시간을 나타냅니다.
+      `DateTime`끼리 빼면 `TimeSpan`이 나온다는 것은 참고 
+    - `TimeSpan` : **두 시점 사이의 차이**를 나타냅니다.
+      `end - start`로 `TimeSpan`을 구해서 소요시간이나 타임아웃 계산에 쓴다 참고
+
 11. 의존성 주입(DI) 기본 개념
     - 의존성 주입(DI)은 클래스가 필요한 객체를 내부에서 **`new`로 직접 만들지 않고, 밖에서 주입받는 방식**입니다.
 
@@ -178,23 +183,60 @@ date: 2026-01-14
 
 4. `INotifyPropertyChanged`를 **해야 UI가 갱신되는 이유**
    - 바인딩은 UI와 ViewModel 속성을 연결해서 값을 보여주지만, 값이 바뀌었다는 사실은 자동으로 알 수 없습니다. 그래서 **값이 변경됐다고 알려주는 표준**이 `INotifyPropertyChanged`이고, 속성이 바뀔 때 `PropertyChanged` 이벤트를 발생시키면 이를 감지해서 UI를 다시 갱신합니다.
+    추가 질문 `INotifyPropertyChanged` + `ObservableCollection` 차이는?
 
 - **의존 프로퍼티(`DependencyProperty`) 설명**
   - WPF 컨트롤 내부에서 속성이 변경되는 것을 관리하는 시스템입니다.
     바인딩, 스타일, 애니메이션 같은 기능이 동작할 때 변경을 감지해 UI가 자동으로 갱신되게 해줍니다.
-~1.16~ ~1.16~ ~1.16~ ~1.16~ ~1.16~
-- WPF 기능의 기반(바인딩/스타일/애니메이션/리소스/기본값/값 상속 등)
-- 템플릿 종류(ControlTemplate / DataTemplate / ItemsPanelTemplate) & 사용처
-- 스타일/브러시/리소스, ResourceDictionary
-  - MergedDictionaries, 테마 분리, DynamicResource 성능 차이까지는 ㄴㄴㄴ 
+~ 여기서부터 ~
 
-- 레이아웃과 패널(Panel 역할 + 종류 예시)Grid/StackPanel/DockPanel/Canvas/WrapPanel 같은 기본 레이아웃 이해
-- **Binding Mode**: OneWay / TwoWay / OneTime (+ UpdateSourceTrigger는 언급 정도)
 
-- **ObservableCollection** (`List<T>`와 뭐가 달라서 ItemsControl이 자동 갱신되는지)
--  Command(명령)란? 코드 분리에 어떻게 도움? 클릭 이벤트를 코드비하인드에서 처리 vs ICommand로 ViewModel로 넘김(분리/테스트/재사용)
-- **Dispatcher & UI Thread** 
-  - 신입 수준 답변 (UI는 UI 스레드에서만 접근 가능 → 백그라운드 결과는 Dispatcher로 UI 스레드에 보내 갱신)
+1. **레이아웃과 패널(Panel 역할 + 종류)**
+    - 레이아웃 종류로는 `Grid`, `Canvas`, `StackPanel`, `DockPanel`, `WrapPanel`이 있습니다.
+    - `Grid` : 화면을 행과 열로 나눠서 배치하는 레이아웃입니다.
+    - `Canvas` : 내가 지정한 좌표(X,Y) 위치에 그대로 배치하는 레이아웃입니다. 
+    - `StackPanel` : 컨트롤을 한 방향으로 쌓아서 배치합니다. 기본값은 수직으로 배치합니다.
+      수평으로하면 왼쪽에서 오른쪽 순서대로 배치합니다.
+    - `DockPanel` : 컨트롤을 상,하,좌,우 중 하나에 붙여 놓습니다. 마지막은 컨트롤은 남는 공간을 전부 차지합니다.
+    - `WrapPanel` : 컨트롤을 왼쪽에서 오른쪽으로 배치하다가 공간이 부족하면 자동으로 다음줄로 내려가서 배치합니다.
+  
+2. `Resource`(`Brush`,`Thickness`, `Style`), `ResourceDictionary` 설명
+    - `Resource`: XAML에서 `x:Key`로 저장해두고 재사용하는 값을 말합니다.
+      `Brush`, `Thickness`, `Style`을 리소스로 등록해서 색상, 여백,두께, 스타일 속성 묶음을 여러 컨트롤에서 공통으로 재사용합니다.
+      리소스가 많아지면 `ResourceDictionary` 파일로 분리해서 관리합니다.
+      - **왜?** 유지보수가 쉽고, 구조가 깔끔해져서
+
+3. **Binding Mode + UpdateSourceTrigger(언급 정도)**
+- OneWay / TwoWay / OneTime
+- TextBox는 보통 TwoWay + (필요 시) UpdateSourceTrigger  
+    → 실무/면접에서 바로 나오는 단골
+
+3. **ObservableCollection (`List<T>`와 차이)**
+   - ItemsControl 자동 갱신이 왜 되는지  
+    → “목록 UI” 만들 때 거의 필수
+3. **Command(ICommand)**
+   - 클릭 이벤트를 code-behind에서 처리 vs ICommand로 VM에 위임  
+    → MVVM 분리/테스트/재사용 포인트라 면접에서 자주 물음.
+
+
+4. 템플릿 종류(ControlTemplate / DataTemplate / ItemsPanelTemplate) & 사용처
+   - **DataTemplate**(데이터를 어떻게 보이게?)
+   - **ItemsPanelTemplate**(아이템을 어떻게 배치?)
+   - **ControlTemplate**(컨트롤 모양 자체를 바꿈)  
+    → 바인딩/리소스/스타일이 이해돼야 템플릿이 쉬움.
+3. **WPF 기능의 기반(값 상속/기본값/리소스/스타일 기반 개념)**
+   - 값 상속(예: FontFamily 같은 것), 기본값, 리소스 해석 흐름  
+    → 위 내용을 “왜 그렇게 동작하는지” 정리하는 단계.
+
+
+9. **Dispatcher & UI Thread**
+- UI는 UI 스레드만 접근 가능
+- 백그라운드 결과는 Dispatcher로 UI 업데이트  
+    → 비동기/통신 붙일 때 반드시 필요(현업에서도 중요)
+    - async/await + UI 갱신 꼬리 질문 가능
+
+
+
 ---
 ## C) MVVM 패턴 기본 개념
 17. **Scenario 모델링이란 무엇인가?
@@ -222,7 +264,7 @@ date: 2026-01-14
 ---
 ## F) DB/SQL 기본 + 쿼리 단골 개념
 
-67. SELECT 기본 구조(SELECT/FROM/WHERE/ORDER BY) 의미
+67. SELECT 기본 구조(SELECT/FROM/WHERE/ORDER BY) 의미 !!!1.16!! 걍 각자 역할과 순서정도
 68. 정규화(정규형) 아주 기본 개념 또는 PK/FK 관계 (JOIN 이해와 직결)
 69. JOIN 개념 + INNER JOIN vs LEFT JOIN 차이
 70. WHERE vs HAVING 차이(그룹 집계)

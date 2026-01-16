@@ -36,6 +36,39 @@ date: 2025-11-18
     </Grid>
 ```
 ![gridRow](../img/wpf.png)
+#### `Canvas` (좌표로 절대 위치 배치)
+-  다른 패널(Grid/StackPanel)은 레이아웃 규칙으로 배치하지만, `Canvas`는 **내가 지정한 위치에 그대로 놓는 방식**이다.
+- 자식 컨트롤을 **좌표(X,Y)** 로 직접 배치하는 패널이다.
+- 창 크기가 바뀌어도 자동 재배치가 거의 안 돼서 **반응형 UI에는 약하다.**
+- 배치 속성
+    - `Canvas.Left="x"` / `Canvas.Top="y"` : 왼쪽/위 기준 좌표
+    - `Canvas.Right` / `Canvas.Bottom` : 오른쪽/아래 기준 배치도 가능
+    - `Panel.ZIndex` : 겹칠 때 앞/뒤 순서(값이 클수록 위)
+```csharp
+<Canvas Width="420" Height="240" Background="WhiteSmoke">
+
+    <Border Canvas.Left="20" Canvas.Top="20"
+            Width="120" Height="60"
+            Background="LightBlue" BorderBrush="SteelBlue" BorderThickness="1">
+        <TextBlock Text="EQ-01" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+    </Border>
+
+    <Border Canvas.Left="180" Canvas.Top="40"
+            Width="120" Height="60"
+            Background="LightGreen" BorderBrush="SeaGreen" BorderThickness="1">
+        <TextBlock Text="EQ-02" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+    </Border>
+
+    <Border Canvas.Left="110" Canvas.Top="110"
+            Width="160" Height="70"
+            Background="MistyRose" BorderBrush="IndianRed" BorderThickness="1"
+            Panel.ZIndex="10">
+        <TextBlock Text="Alarm Overlay" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+    </Border>
+</Canvas>
+```
+![canvas](../img/canvas_diagram.svg)
+
 #### `StackPanel` (세로/가로로 쌓기)
 - `StackPanel`은 안에 들어있는 컨트롤을 **한 방향으로 줄줄이 쌓아** 배치한다.
 - 기본값은 `Vertical`
