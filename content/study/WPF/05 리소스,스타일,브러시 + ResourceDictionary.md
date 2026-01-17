@@ -30,6 +30,8 @@ date: 2025-12-15
 ```csharp
 <TextBlock Margin="{DynamicResource CommonMargin}" Text="Hello"/>
 ```
+
+좋은 자료 :  https://daminkoon.tistory.com/4 
 #### `Brush`
 - `Background` / `Foreground`에 쓰는 **색 객체**이다.
 ```csharp
