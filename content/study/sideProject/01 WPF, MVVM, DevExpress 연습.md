@@ -7,11 +7,11 @@ tags:
   - DevExpress
 date: 2026-01-30
 ---
-앞으로 담당하게 될 UI/Scenario 파트에 빠르게 적응하기 위해, OJT 기간동안 WPF MVVM 구조와 DevExpress를 연습하려고 한다. DevExpress를 안정적으로 활용하기 위해 WPF의 기본 틀을 먼저 이해하고 DevExpress를 확장하는 방식으로 학습 방향을 정했다.
+앞으로 담당하게 될 UI/Scenario 파트에 빠르게 적응하기 위해, OJT 기간동안 WPF MVVM 구조와 DevExpress를 연습하려고 한다. DevExpress를 안정적으로 활용하기 위해서 WPF의 기본 틀을 먼저 이해하고 DevExpress를 확장하는 방식으로 학습 방향을 정했다.
 
 ### `DevExpress`
 DevExpress는 **WPF에서 사용하는 컴포넌트(그리드, 트리, 차트 등)** 를 고급 기능까지 포함해서 제공하는 **상용 UI 라이브러리**다. 
-기본 WPF 컨트롤로도 구현은 가능하지만, DevExpress를 쓰면 **기능을 더 빠르고 안정적으로** 구성할 수 있다고 한다.
+기본 WPF 컨트롤로도 구현은 가능하지만, DevExpress를 쓰면 **기능을 더 빠르고 안정적으로** 구성할 수 있다고 한다. <br>
 ~~무료 기간동안 알차게 공부를 해야함.. 떨린다~~
 ### Mini MES
 
@@ -27,18 +27,17 @@ DevExpress는 **WPF에서 사용하는 컴포넌트(그리드, 트리, 차트 �
 - 하단: 이벤트 로그
 
 **목표**
-- **사용자 동작은 Command**
+- **사용자 동작은 Command** <br>
     `연결`, `연결 해제` 같은 버튼 클릭을 **`ICommand`를 통해 ViewModel에 연결**한다.  
-- **데이터, 상태 변경은 Binding**
+- **데이터, 상태 변경은 Binding** <br>
     선택 설비, 연결 상태, 모드, 마지막 확인 시간 같은 값은 **Binding**으로 **ViewModel 프로퍼티에 연결**한다.  
     값이 바뀌면 `INotifyPropertyChanged`로 UI가 자동 갱신되도록 구성한다.
-- **설비 목록, 이벤트 로그는 ObservableCollection**
+- **설비 목록, 이벤트 로그는 ObservableCollection** <br>
   `ObservableCollection<T>`로 **이벤트를 발생**시켜 UI를 자동으로 갱신되도록 구성한다.
 ### 폴더 구조(MVVM)
 - `Models`
 - `ViewModels`
 - `Views`
-
 ### View
 레이아웃(WPF)
 #### Views/MainWindow.xaml
