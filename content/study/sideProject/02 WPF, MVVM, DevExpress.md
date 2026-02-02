@@ -213,4 +213,3 @@ set
 
 ![최종](../img/last.jpg)
 
-WPF, MVVM 기본 구조에서 이제 DevExpress로 컨트롤을 교체해보겠다.
