@@ -1,5 +1,5 @@
 ---
-title: 01 WPF, MVVM, DevExpress 연습
+title: 01 WPF, MVVM, DevExpress
 tags:
   - csharp
   - wpf
@@ -13,6 +13,8 @@ date: 2026-01-30
 DevExpress는 **WPF에서 사용하는 컴포넌트(그리드, 트리, 차트 등)** 를 고급 기능까지 포함해서 제공하는 **상용 UI 라이브러리**다. 
 기본 WPF 컨트롤로도 구현은 가능하지만, DevExpress를 쓰면 **기능을 더 빠르고 안정적으로** 구성할 수 있다고 한다. <br>
 ~~무료 기간동안 알차게 공부 해야함.. 떨린다~~
+
+---
 ### Mini MES
 
 **화면 구성, 기능**
@@ -28,9 +30,9 @@ DevExpress는 **WPF에서 사용하는 컴포넌트(그리드, 트리, 차트 �
 
 **목표**
 - **사용자 동작은 Command** <br>
-    `연결`, `연결 해제` 같은 버튼 클릭을 **`ICommand`를 통해 ViewModel에 연결**한다.  
+    `연결`, `연결 해제` 같은 버튼 클릭을 `ICommand`를 통해 연결한다.  
 - **데이터, 상태 변경은 Binding** <br>
-    선택 설비, 연결 상태, 모드, 마지막 확인 시간 같은 값은 **Binding**으로 **ViewModel 프로퍼티에 연결**한다.  
+    선택 설비, 연결 상태, 모드, 마지막 확인 시간 같은 값은 `Binding`으로 연결한다.  
     값이 바뀌면 `INotifyPropertyChanged`로 UI가 자동 갱신되도록 구성한다.
 - **설비 목록, 이벤트 로그는 ObservableCollection** <br>
   `ObservableCollection<T>`로 **이벤트를 발생**시켜 UI를 자동으로 갱신되도록 구성한다.
@@ -38,6 +40,7 @@ DevExpress는 **WPF에서 사용하는 컴포넌트(그리드, 트리, 차트 �
 - `Models`
 - `ViewModels`
 - `Views`
+---
 ### View
 레이아웃(WPF)
 #### Views/MainWindow.xaml
@@ -74,7 +77,7 @@ DevExpress는 **WPF에서 사용하는 컴포넌트(그리드, 트리, 차트 �
 </Grid>
 ```
 
-![초기화면](../img/ex.JPG)
+![초기화면](../img/ex.jpg)
 
 ### Model
 데이터의 구조와 의미를 정의
@@ -180,4 +183,4 @@ namespace MES_APP.Views
     </StackPanel>
 </Border>
 ```
-![설비모니터](../img/ex2.JPG)
+![설비모니터](../img/ex2.jpg)
