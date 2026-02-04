@@ -8,8 +8,8 @@ tags:
 <dx:ThemedWindow x:Class="HAceMaker.MainWindow"
         xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core">
 ```
-`dx:` DevExpress의 core 네임스페이스에 있는 컨트롤을 쓰겠다는 의미의 **XAML 접두사**를 명시
-코드비하인드도 동일하게 맞춰줘야 한다.
+`xmlns:dx`: XAML에서 DevExpress 컨트롤을 쓰기 위한 별칭<br>
+코드비하인드에서도`ThemedWindow`를 상속해야 한다.
 ```csharp
 public partial class MainWindow : ThemedWindow
 {
