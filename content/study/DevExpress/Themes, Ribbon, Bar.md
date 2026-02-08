@@ -62,6 +62,19 @@ public partial class App : System.Windows.Application
 2. **콘솔 창 입력**
    `Install-Package DevExpress.Wpf.Ribbon -Version 25.2.4`
 
+### Ribbon 계층 구조
+Ribbon은 `RibbonPage → RibbonPageGroup → BarButtonItem` 구조로 구성되어있다.
+- **RibbonPage**: 상단의 **탭 1개**(예: Home, View) 탭을 클릭하면 하위 내용이 표시된다.
+- **RibbonPageGroup**: 탭 안에서 버튼 아이템을 묶는 **그룹** 
+- **BarButtonItem**: 사용자가 클릭하는 **실제 명령 버튼 1개**
+```csharp
+<dxr:RibbonPage Caption="Home">
+	<dxr:RibbonPageGroup Caption="File">
+		<dxb:BarButtonItem Content="New"/>
+		<dxb:BarButtonItem Content="Open"/>
+		<dxb:BarButtonItem Content="Close"/>
+```
+![ribbon](../img/Ribbon.png)
 ## Backstage
 리본에서 메뉴를 눌렀을 때 별도의 **화면 전환**을 제공
 **Info 메뉴를 눌렀을 때 나타나는 Backstage 화면 예시**
